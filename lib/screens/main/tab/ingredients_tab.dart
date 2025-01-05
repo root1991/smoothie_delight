@@ -52,6 +52,7 @@ class IngredientsTab extends ConsumerWidget {
                         children: [
                           Text(
                             entry.key.name,
+                            textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

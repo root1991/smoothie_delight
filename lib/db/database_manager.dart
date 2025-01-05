@@ -55,7 +55,6 @@ class DatabaseMananger {
       name TEXT NOT NULL,
       description TEXT,
       calories INTEGER,
-      preparationGuide TEXT,
       assetPath TEXT,
       isVegan INTEGER,
       isChilled INTEGER,
@@ -85,6 +84,26 @@ class DatabaseMananger {
       vitaminName TEXT,
       amount REAL,
       PRIMARY KEY (recipeId, vitaminName),
+      FOREIGN KEY (recipeId) REFERENCES recipes (id) ON DELETE CASCADE
+    )
+  ''');
+
+    await db.execute('''
+    CREATE TABLE preparations (
+      recipeId INTEGER,
+      shortDescription TEXT,
+      PRIMARY KEY (recipeId),
+      FOREIGN KEY (recipeId) REFERENCES recipes (id) ON DELETE CASCADE
+    )
+  ''');
+
+    await db.execute('''
+    CREATE TABLE preparation_steps (
+      recipeId INTEGER,
+      stepNumber INTEGER,
+      instruction TEXT,
+      duration INTEGER,
+      PRIMARY KEY (recipeId, stepNumber),
       FOREIGN KEY (recipeId) REFERENCES recipes (id) ON DELETE CASCADE
     )
   ''');

@@ -83,7 +83,7 @@ class RecipeDetailScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                recipe.preparationGuide,
+                recipe.preparation.shortDescription,
                 style: const TextStyle(fontSize: 16),
               ),
             ),

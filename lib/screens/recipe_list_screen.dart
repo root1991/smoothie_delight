@@ -67,6 +67,7 @@ class RecipeListScreen extends ConsumerWidget {
                                 children: [
                                   Text(
                                     recipe.name,
+                                    textAlign: TextAlign.center,
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,

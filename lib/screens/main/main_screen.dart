@@ -28,6 +28,7 @@ class MainScreen extends ConsumerWidget {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         backgroundColor:
             Theme.of(context).bottomNavigationBarTheme.backgroundColor ??
                 Colors.white,
