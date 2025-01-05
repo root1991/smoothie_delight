@@ -28,7 +28,7 @@ class Preparation {
 class Step {
   final int stepNumber;
   final String instruction;
-  final Duration? duration; // Optional, can represent how long the step takes
+  final Duration? duration; 
   final List<String>? tips; // Optional list of tips for this step
 
   Step({
