@@ -42,7 +42,7 @@ class Step {
     return {
       'stepNumber': stepNumber,
       'instruction': instruction,
-      'duration': duration?.inMinutes,
+      'duration': duration?.inSeconds,
       'tips': tips,
     };
   }
@@ -52,7 +52,7 @@ class Step {
       stepNumber: map['stepNumber'],
       instruction: map['instruction'],
       duration:
-          map['duration'] != null ? Duration(minutes: map['duration']) : null,
+          map['duration'] != null ? Duration(seconds: map['duration']) : null,
       tips: map['tips'] != null ? List<String>.from(map['tips']) : null,
     );
   }

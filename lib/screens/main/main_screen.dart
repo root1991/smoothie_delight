@@ -32,7 +32,7 @@ class MainScreen extends ConsumerWidget {
         backgroundColor:
             Theme.of(context).bottomNavigationBarTheme.backgroundColor ??
                 Colors.white,
-        selectedItemColor: Theme.of(context).colorScheme.primary,
+        selectedItemColor: Theme.of(context).primaryColor,
         unselectedItemColor: Colors.grey,
         currentIndex: selectedIndex,
         onTap: (index) {

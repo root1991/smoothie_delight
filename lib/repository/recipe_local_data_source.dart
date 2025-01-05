@@ -65,7 +65,7 @@ class RecipeLocalDataSource {
           'recipeId': recipeId,
           'stepNumber': step.stepNumber,
           'instruction': step.instruction,
-          'duration': step.duration?.inMinutes,
+          'duration': step.duration?.inSeconds,
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
