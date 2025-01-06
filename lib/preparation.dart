@@ -28,32 +28,36 @@ class Preparation {
 class Step {
   final int stepNumber;
   final String instruction;
-  final Duration? duration; 
-  final List<String>? tips; // Optional list of tips for this step
+  final Duration? duration;
+  final List<String> tips; // Optional list of tips for this step
 
   Step({
     required this.stepNumber,
     required this.instruction,
     this.duration,
-    this.tips,
+    this.tips = const [],
   });
 
   Map<String, dynamic> toMap() {
+    print('ANKH: $tips');
     return {
       'stepNumber': stepNumber,
       'instruction': instruction,
       'duration': duration?.inSeconds,
-      'tips': tips,
+      'tips': tips.join('|') // Serialize to string
+      ,
     };
   }
 
   factory Step.fromMap(Map<String, dynamic> map) {
+    print('ANKH ${map['tips'].toString()}');
+    print('ANKH ${map['instruction'].toString()}');
     return Step(
       stepNumber: map['stepNumber'],
       instruction: map['instruction'],
       duration:
           map['duration'] != null ? Duration(seconds: map['duration']) : null,
-      tips: map['tips'] != null ? List<String>.from(map['tips']) : null,
+      tips: (map['tips'].toString()).split('|'),
     );
   }
 }

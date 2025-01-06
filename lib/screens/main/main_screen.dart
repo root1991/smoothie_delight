@@ -23,7 +23,7 @@ class MainScreen extends ConsumerWidget {
         children: [
           const CategoriesTab(),
           const IngredientsTab(),
-          const DailySmoothyTab(),
+          const DailySmoothieTab(),
           if (favoriteRecipes.isNotEmpty) const FavoritesTab()
         ],
       ),

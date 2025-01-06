@@ -56,14 +56,14 @@ class RecipeLocalDataSource {
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-
     for (final step in recipe.preparation.steps) {
-      print('Inserting step \${step.stepNumber} for recipe ID: \$recipeId');
+      print('ANKH db: ${step.tips}');
       await db.insert(
         'preparation_steps',
         {
           'recipeId': recipeId,
           'stepNumber': step.stepNumber,
+          'tips': step.tips.join('|'),
           'instruction': step.instruction,
           'duration': step.duration?.inSeconds,
         },

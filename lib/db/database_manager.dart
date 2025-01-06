@@ -103,6 +103,7 @@ class DatabaseMananger {
       stepNumber INTEGER,
       instruction TEXT,
       duration INTEGER,
+      tips TEXT,
       PRIMARY KEY (recipeId, stepNumber),
       FOREIGN KEY (recipeId) REFERENCES recipes (id) ON DELETE CASCADE
     )
