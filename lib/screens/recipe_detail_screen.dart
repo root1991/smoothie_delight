@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smoothie/main.dart';
 import 'package:smoothie/models.dart';
+import 'package:smoothie/screens/cooking_screen.dart';
 import 'package:smoothie/vitamin_bar_widget.dart';
 
 class RecipeDetailScreen extends ConsumerWidget {
@@ -26,9 +27,13 @@ class RecipeDetailScreen extends ConsumerWidget {
                 );
           },
           icon: isFavorite
-              ? const Icon(Icons.favorite)
+              ? const Icon(
+                  Icons.favorite,
+                  color: Colors.green,
+                )
               : const Icon(
                   Icons.favorite_outline,
+                  color: Colors.green,
                 ),
         ),
       ]),
@@ -53,10 +58,6 @@ class RecipeDetailScreen extends ConsumerWidget {
                 'Calories: ${recipe.calories} kcal',
                 style: const TextStyle(fontSize: 16),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: VitaminBarWidget(vitamins: recipe.vitamins),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -83,10 +84,52 @@ class RecipeDetailScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                recipe.preparationGuide,
+                recipe.preparation.shortDescription,
                 style: const TextStyle(fontSize: 16),
               ),
             ),
+            const SizedBox(
+              height: 10,
+            ),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CookingScreen(
+                        preparation: recipe.preparation,
+                      ),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                ),
+                child: const Text(
+                  'Let\'s Cook',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: VitaminBarWidget(vitamins: recipe.vitamins),
+            ),
+            const SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),

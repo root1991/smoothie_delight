@@ -1,4 +1,6 @@
 // Models
+import 'package:smoothie/preparation.dart';
+
 class Quantity {
   final String description;
   final int weightInGrams;
@@ -89,7 +91,7 @@ class Recipe {
   final String description;
   final List<Ingredient> ingredients;
   final int calories;
-  final String preparationGuide;
+  final Preparation preparation;
   final Map<String, double> vitamins;
   final List<Category> categories;
   final String assetPath;
@@ -105,7 +107,7 @@ class Recipe {
     required this.description,
     required this.ingredients,
     required this.calories,
-    required this.preparationGuide,
+    required this.preparation,
     required this.vitamins,
     required this.categories,
     this.isVegan = true,
@@ -120,7 +122,6 @@ class Recipe {
       'name': name,
       'description': description,
       'calories': calories,
-      'preparationGuide': preparationGuide,
       'assetPath': assetPath,
       'isVegan': isVegan ? 1 : 0,
       'isChilled': isChilled ? 1 : 0,
@@ -130,27 +131,18 @@ class Recipe {
     };
   }
 
-  /// Converts Vitamins to Map (for storing in a separate table)
-  Map<String, dynamic> vitaminsToMap(int recipeId) {
-    return vitamins.map((key, value) => MapEntry(key, {
-          'recipeId': recipeId,
-          'vitaminName': key,
-          'amount': value,
-        }));
-  }
-
-  /// Factory Method to Convert Map to Recipe
   factory Recipe.fromMap(
     Map<String, dynamic> map, {
     required List<Ingredient> loadedIngredients,
     required Map<String, double> loadedVitamins,
     required List<Category> loadedCategories,
+    required Preparation preparation,
   }) {
     return Recipe(
       name: map['name'],
       description: map['description'],
       calories: map['calories'],
-      preparationGuide: map['preparationGuide'],
+      preparation: preparation,
       assetPath: map['assetPath'],
       ingredients: loadedIngredients,
       vitamins: loadedVitamins,

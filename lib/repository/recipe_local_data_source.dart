@@ -1,5 +1,6 @@
 import 'package:smoothie/db/database_manager.dart';
 import 'package:smoothie/models.dart';
+import 'package:smoothie/preparation.dart';
 import 'package:sqflite/sqflite.dart';
 
 class RecipeLocalDataSource {
@@ -40,6 +41,31 @@ class RecipeLocalDataSource {
           'recipeId': recipeId,
           'categoryName': category.name,
           'assetPath': category.assetPath,
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    }
+
+    await db.insert(
+      'preparations',
+      {
+        'recipeId': recipeId,
+        'shortDescription': recipe.preparation.shortDescription.isNotEmpty
+            ? recipe.preparation.shortDescription
+            : 'No description available',
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    for (final step in recipe.preparation.steps) {
+      print('ANKH db: ${step.tips}');
+      await db.insert(
+        'preparation_steps',
+        {
+          'recipeId': recipeId,
+          'stepNumber': step.stepNumber,
+          'tips': step.tips.join('|'),
+          'instruction': step.instruction,
+          'duration': step.duration?.inSeconds,
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
@@ -200,7 +226,6 @@ class RecipeLocalDataSource {
     for (final recipeMap in result) {
       final recipeId = recipeMap['id'];
 
-      // Fetch Ingredients
       final ingredientResults = await db.query(
         'recipe_ingredients',
         where: 'recipeId = ?',
@@ -210,7 +235,6 @@ class RecipeLocalDataSource {
         return Ingredient.fromMap(map);
       }).toList();
 
-      // Fetch Vitamins
       final vitaminResults = await db.query(
         'recipe_vitamins',
         where: 'recipeId = ?',
@@ -221,7 +245,6 @@ class RecipeLocalDataSource {
           v['vitaminName'] as String: v['amount'] as double
       };
 
-      // Fetch Categories
       final categoryResults = await db.query(
         'recipe_categories',
         where: 'recipeId = ?',
@@ -234,13 +257,36 @@ class RecipeLocalDataSource {
         );
       }).toList();
 
-      // Construct Recipe with Loaded Data
+      // Fetch Preparation
+      final preparationResult = await db.query(
+        'preparations',
+        where: 'recipeId = ?',
+        whereArgs: [recipeId],
+      );
+
+      final stepResults = await db.query(
+        'preparation_steps',
+        where: 'recipeId = ?',
+        whereArgs: [recipeId],
+      );
+
+      final steps = stepResults.map((map) => Step.fromMap(map)).toList();
+
+      final preparation = preparationResult.isNotEmpty
+          ? Preparation(
+              shortDescription:
+                  preparationResult.first['shortDescription'] as String,
+              steps: steps,
+            )
+          : Preparation(shortDescription: '', steps: []);
+
       recipes.add(
         Recipe.fromMap(
           recipeMap,
           loadedIngredients: ingredients,
           loadedVitamins: vitamins,
           loadedCategories: categories,
+          preparation: preparation,
         ),
       );
     }
@@ -313,7 +359,7 @@ class RecipeLocalDataSource {
         name: row['name'] as String,
         description: row['description'] as String,
         calories: row['calories'] as int,
-        preparationGuide: row['preparationGuide'] as String,
+        preparation: Preparation(shortDescription: '', steps: []),
         assetPath: row['assetPath'] as String,
         ingredients: [],
         vitamins: {},

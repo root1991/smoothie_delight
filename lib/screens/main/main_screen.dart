@@ -23,15 +23,16 @@ class MainScreen extends ConsumerWidget {
         children: [
           const CategoriesTab(),
           const IngredientsTab(),
-          const DailySmoothyTab(),
+          const DailySmoothieTab(),
           if (favoriteRecipes.isNotEmpty) const FavoritesTab()
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         backgroundColor:
             Theme.of(context).bottomNavigationBarTheme.backgroundColor ??
                 Colors.white,
-        selectedItemColor: Theme.of(context).colorScheme.primary,
+        selectedItemColor: Theme.of(context).primaryColor,
         unselectedItemColor: Colors.grey,
         currentIndex: selectedIndex,
         onTap: (index) {
