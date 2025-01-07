@@ -74,6 +74,21 @@ class LetsDoItPage extends StatelessWidget {
             style: TextStyle(fontSize: 18),
           ),
         ),
+        const SizedBox(
+          height: 10,
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(28.0),
+            child: Image.asset(
+              'assets/daily.webp',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
         Center(
           child: ElevatedButton(
             onPressed: nextPage,
@@ -95,6 +110,9 @@ class LetsDoItPage extends StatelessWidget {
               ),
             ),
           ),
+        ),
+        const SizedBox(
+          height: 30,
         ),
       ],
     );
