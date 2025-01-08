@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smoothie/main.dart';
 
 final pageIndexProvider = StateProvider<int>((ref) => 0);
+final selectedIngredientsProvider = StateProvider<List<String>>((ref) => []);
 
 class DailySmoothieTab extends ConsumerWidget {
   const DailySmoothieTab({super.key});
@@ -30,8 +32,7 @@ class DailySmoothieTab extends ConsumerWidget {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           LetsDoItPage(nextPage: nextPage),
-          GoalPage(index: 1, nextPage: nextPage),
-          GoalPage(index: 2, nextPage: nextPage),
+          IngredientSelectionPage(),
           GoalPage(index: 3, nextPage: nextPage),
           GoalPage(index: 4, nextPage: nextPage),
           GoalPage(index: 5, nextPage: nextPage),
@@ -115,6 +116,36 @@ class LetsDoItPage extends StatelessWidget {
           height: 30,
         ),
       ],
+    );
+  }
+}
+
+class IngredientSelectionPage extends ConsumerWidget {
+  const IngredientSelectionPage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final productsAsync = ref.watch(productsProvider);
+    final selectedIngredients = ref.watch(selectedIngredientsProvider);
+
+    return productsAsync.when(
+      data: (products) => ListView(
+        children: products.map((product) {
+          final isSelected = selectedIngredients.contains(product.name);
+          return CheckboxListTile(
+            title: Text(product.name),
+            value: isSelected,
+            onChanged: (selected) {
+              ref.read(selectedIngredientsProvider.notifier).state = [
+                ...selectedIngredients.where((item) => item != product.name),
+                if (selected == true) product.name,
+              ];
+            },
+          );
+        }).toList(),
+      ),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stack) => Center(child: Text('Error: $err')),
     );
   }
 }

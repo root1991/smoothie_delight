@@ -57,7 +57,6 @@ class RecipeLocalDataSource {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
     for (final step in recipe.preparation.steps) {
-      print('ANKH db: ${step.tips}');
       await db.insert(
         'preparation_steps',
         {
@@ -72,6 +71,12 @@ class RecipeLocalDataSource {
     }
 
     return recipeId;
+  }
+
+  Future<List<Product>> loadProducts() async {
+    final db = await dbHelper.database;
+    final result = await db.query('products');
+    return result.map((map) => Product.fromMap(map)).toList();
   }
 
   Future<void> populateProductsFromIngredients() async {
