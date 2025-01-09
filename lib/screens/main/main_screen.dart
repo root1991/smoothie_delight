@@ -16,7 +16,7 @@ class MainScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Smoothie Recipes'),
+        title: const Text('Smoothie Delight'),
       ),
       body: IndexedStack(
         index: selectedIndex,

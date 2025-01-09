@@ -83,6 +83,11 @@ final recipesProvider = Provider<Map<String, List<Recipe>>>((ref) {
   };
 });
 
+final productsProvider = FutureProvider<List<Product>>((ref) async {
+  final db = RecipeLocalDataSource();
+  return db.loadProducts();
+});
+
 final selectedIndexProvider = StateProvider<int>((ref) => 0);
 
 class SmoothieApp extends StatelessWidget {
