@@ -32,12 +32,195 @@ class DailySmoothieTab extends ConsumerWidget {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           LetsDoItPage(nextPage: nextPage),
-          IngredientSelectionPage(),
+          IngredientSelectionPage(nextPage),
           GoalPage(index: 3, nextPage: nextPage),
           GoalPage(index: 4, nextPage: nextPage),
           GoalPage(index: 5, nextPage: nextPage),
         ],
       ),
+    );
+  }
+}
+
+class GoalPage extends StatelessWidget {
+  final int index;
+  final VoidCallback nextPage;
+
+  const GoalPage({
+    super.key,
+    required this.index,
+    required this.nextPage,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> goalTitles = [
+      'Energy Boost',
+      'Recovery',
+      'Detox',
+      'Immunity Boost',
+      'Healthy Skin',
+      'Bone Health'
+    ];
+
+    return Column(
+      children: [
+        Center(
+          child: Text(
+            goalTitles[index],
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: nextPage,
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 40,
+              vertical: 15,
+            ),
+          ),
+          child: const Text(
+            'Next',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class IngredientSelectionPage extends ConsumerWidget {
+  const IngredientSelectionPage(this.nextPage, {super.key});
+  final VoidCallback nextPage;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final productsAsync = ref.watch(productsProvider);
+    final selectedIngredients = ref.watch(selectedIngredientsProvider);
+
+    return Column(
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            'What do you have at home?',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 25,
+            ),
+          ),
+        ),
+        Expanded(
+          child: productsAsync.when(
+            data: (products) => GridView.builder(
+              padding: const EdgeInsets.all(16.0),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16.0,
+                mainAxisSpacing: 16.0,
+              ),
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                final product = products[index];
+                final isSelected = selectedIngredients.contains(product.name);
+
+                return GestureDetector(
+                  onTap: () {
+                    ref.read(selectedIngredientsProvider.notifier).state = [
+                      ...selectedIngredients
+                          .where((item) => item != product.name),
+                      if (!isSelected) product.name,
+                    ];
+                  },
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        width: 250,
+                        child: Card(
+                          elevation: 4.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(
+                                    product.assetPath,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                product.name,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      if (isSelected)
+                        Container(
+                          width: 250,
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.6),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.check,
+                              size: 48,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (err, stack) => Center(child: Text('Error: $err')),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ElevatedButton(
+            onPressed: nextPage,
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 40,
+                vertical: 15,
+              ),
+            ),
+            child: const Text(
+              'Next',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -114,90 +297,6 @@ class LetsDoItPage extends StatelessWidget {
         ),
         const SizedBox(
           height: 30,
-        ),
-      ],
-    );
-  }
-}
-
-class IngredientSelectionPage extends ConsumerWidget {
-  const IngredientSelectionPage({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final productsAsync = ref.watch(productsProvider);
-    final selectedIngredients = ref.watch(selectedIngredientsProvider);
-
-    return productsAsync.when(
-      data: (products) => ListView(
-        children: products.map((product) {
-          final isSelected = selectedIngredients.contains(product.name);
-          return CheckboxListTile(
-            title: Text(product.name),
-            value: isSelected,
-            onChanged: (selected) {
-              ref.read(selectedIngredientsProvider.notifier).state = [
-                ...selectedIngredients.where((item) => item != product.name),
-                if (selected == true) product.name,
-              ];
-            },
-          );
-        }).toList(),
-      ),
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, stack) => Center(child: Text('Error: $err')),
-    );
-  }
-}
-
-class GoalPage extends StatelessWidget {
-  final int index;
-  final VoidCallback nextPage;
-
-  const GoalPage({
-    super.key,
-    required this.index,
-    required this.nextPage,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    List<String> goalTitles = [
-      'Energy Boost',
-      'Recovery',
-      'Detox',
-      'Immunity Boost',
-      'Healthy Skin',
-      'Bone Health'
-    ];
-
-    return Column(
-      children: [
-        Center(
-          child: Text(
-            goalTitles[index],
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: nextPage,
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 40,
-              vertical: 15,
-            ),
-          ),
-          child: const Text(
-            'Next',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
-          ),
         ),
       ],
     );
