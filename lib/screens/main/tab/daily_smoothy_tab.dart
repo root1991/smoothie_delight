@@ -96,6 +96,15 @@ class GoalPage extends StatelessWidget {
   }
 }
 
+class MoodSelectionPage extends ConsumerWidget {
+  const MoodSelectionPage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return const Placeholder();
+  }
+}
+
 class IngredientSelectionPage extends ConsumerWidget {
   const IngredientSelectionPage(this.nextPage, {super.key});
   final VoidCallback nextPage;
