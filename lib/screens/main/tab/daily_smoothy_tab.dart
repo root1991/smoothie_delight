@@ -4,6 +4,15 @@ import 'package:smoothie/main.dart';
 
 final pageIndexProvider = StateProvider<int>((ref) => 0);
 final selectedIngredientsProvider = StateProvider<List<String>>((ref) => []);
+final selectedMoodProvider = StateProvider<String?>((ref) => null);
+final moods = [
+  'Energetic',
+  'Happy',
+  'Sad',
+  'Relaxed',
+  'Stressed',
+  'Fine',
+];
 
 class DailySmoothieTab extends ConsumerWidget {
   const DailySmoothieTab({super.key});
@@ -97,11 +106,97 @@ class GoalPage extends StatelessWidget {
 }
 
 class MoodSelectionPage extends ConsumerWidget {
-  const MoodSelectionPage({super.key});
+  final VoidCallback nextPage;
+
+  const MoodSelectionPage(this.nextPage, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Placeholder();
+    final selectedMood = ref.watch(selectedMoodProvider);
+    return Column(
+      children: [
+        const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text(
+            'What do you have at home?',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 25,
+            ),
+          ),
+        ),
+        Expanded(
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              mainAxisSpacing: 16.0,
+              crossAxisSpacing: 16.0,
+              crossAxisCount: 2,
+            ),
+            itemCount: moods.length,
+            itemBuilder: (context, index) {
+              final mood = moods[index];
+              final isSelected = selectedMood == mood;
+              return GestureDetector(
+                  child: Stack(
+                children: [
+                  Card(
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Center(
+                      child: Text(
+                        mood,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  if (isSelected)
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.green.withOpacity(0.6),
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.check,
+                          size: 48,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                ],
+              ));
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ElevatedButton(
+            onPressed: nextPage,
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 40,
+                vertical: 15,
+              ),
+            ),
+            child: const Text(
+              'Next',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 
