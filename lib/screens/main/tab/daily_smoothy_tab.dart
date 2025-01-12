@@ -1,9 +1,98 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smoothie/main.dart';
+import 'package:smoothie/models.dart';
+import 'package:smoothie/products.dart';
+
+class Mood {
+  final String name;
+  final String assetImage;
+  final List<Product> products;
+
+  Mood({
+    required this.name,
+    required this.assetImage,
+    required this.products,
+  });
+}
 
 final pageIndexProvider = StateProvider<int>((ref) => 0);
 final selectedIngredientsProvider = StateProvider<List<String>>((ref) => []);
+final selectedMoodProvider = StateProvider<Mood?>((ref) => null);
+final moods = [
+  Mood(
+    name: 'Energetic',
+    assetImage: 'assets/energetic.webp',
+    products: [
+      oranges,
+      spinach,
+      kiwi,
+      pineapple,
+      greenApple,
+      watermelon,
+      strawberry
+    ],
+  ),
+  Mood(
+    name: 'Happy',
+    assetImage: 'assets/happy.webp',
+    products: [
+      banana,
+      strawberry,
+      blueberries,
+      peach,
+      coconutWater,
+      honey,
+      mango,
+      pineapple,
+    ],
+  ),
+  Mood(
+    name: 'Sad',
+    assetImage: 'assets/sad.webp',
+    products: [
+      spinach,
+      chocolateMilk,
+      pineapple,
+      oranges,
+      banana,
+      strawberry,
+      blueberries
+    ],
+  ),
+  Mood(
+    name: 'Relaxed',
+    assetImage: 'assets/relaxed.webp',
+    products: [
+      honey,
+      avocado,
+      chiaSeeds,
+      almondMilk,
+      coconutWater,
+      cucumber,
+      spinach,
+      pineapple,
+      papaya,
+      mango,
+      banana,
+      peach
+    ],
+  ),
+  Mood(
+    name: 'Stressed',
+    assetImage: 'assets/stressed.webp',
+    products: [
+      blueberries,
+      banana,
+      avocado,
+      oranges,
+      kiwi,
+      spinach,
+      chiaSeeds,
+      honey,
+    ],
+  ),
+];
 
 class DailySmoothieTab extends ConsumerWidget {
   const DailySmoothieTab({super.key});
@@ -33,7 +122,7 @@ class DailySmoothieTab extends ConsumerWidget {
         children: [
           LetsDoItPage(nextPage: nextPage),
           IngredientSelectionPage(nextPage),
-          GoalPage(index: 3, nextPage: nextPage),
+          MoodSelectionPage(nextPage),
           GoalPage(index: 4, nextPage: nextPage),
           GoalPage(index: 5, nextPage: nextPage),
         ],
@@ -88,6 +177,122 @@ class GoalPage extends StatelessWidget {
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class MoodSelectionPage extends ConsumerWidget {
+  final VoidCallback nextPage;
+
+  const MoodSelectionPage(this.nextPage, {super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedMood = ref.watch(selectedMoodProvider);
+    return Column(
+      children: [
+        const Text(
+          'How do you feel?',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 25,
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 8.0,
+                mainAxisSpacing: 16.0,
+              ),
+              itemCount: moods.length,
+              itemBuilder: (context, index) {
+                final mood = moods[index];
+                final isSelected = selectedMood == mood;
+                return GestureDetector(
+                    onTap: () {
+                      ref.read(selectedMoodProvider.notifier).state =
+                          isSelected ? null : mood;
+                    },
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          width: 250,
+                          child: Card(
+                            elevation: 4.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.asset(
+                                      mood.assetImage,
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  mood.name,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        if (isSelected)
+                          Container(
+                            width: 250,
+                            decoration: BoxDecoration(
+                              color: Colors.green.withOpacity(0.6),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Center(
+                              child: Icon(
+                                Icons.check,
+                                size: 48,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ));
+              },
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ElevatedButton(
+            onPressed: nextPage,
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 40,
+                vertical: 15,
+              ),
+            ),
+            child: const Text(
+              'Next',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
