@@ -3,6 +3,318 @@ import 'package:smoothie/offline_categories.dart';
 import 'package:smoothie/preparation.dart';
 import 'package:smoothie/products.dart';
 
+final breakfastBoostersRecipes = [
+  Recipe(
+    assetPath: 'assets/apple_cinnamon_delight',
+    name: 'Apple Cinnamon Delight',
+    description: 'A warming and hearty breakfast smoothie.',
+    ingredients: [
+      Ingredient(
+        product: apple,
+        quantity: Quantity(
+          description: '1 medium',
+          weightInGrams: 200,
+          calories: 95,
+        ),
+      ),
+      Ingredient(
+        product: cinnamon,
+        quantity: Quantity(
+          description: '1/2 tsp',
+          weightInGrams: 1,
+          calories: 3,
+        ),
+      ),
+      Ingredient(
+        product: oatMilk,
+        quantity: Quantity(
+          description: '1 cup',
+          weightInGrams: 240,
+          calories: 120,
+        ),
+      ),
+    ],
+    calories: 218,
+    preparation: Preparation(
+      shortDescription:
+          'A smoothie with the sweet taste of apples and cinnamon.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction: 'Core and slice the apple, then add it to the blender.',
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Sprinkle cinnamon and pour in oat milk.',
+          tips: ['Use chilled oat milk for a refreshing smoothie.'],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until smooth.',
+          duration: const Duration(seconds: 30),
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve with a sprinkle of extra cinnamon on top.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 12.0,
+      'Calcium': 150.0,
+      'Iron': 1.2,
+    },
+    categories: [breakfastBoosters],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 5,
+  ),
+  Recipe(
+    assetPath: 'assets/banana_espresso_shake',
+    name: 'Banana Espresso Shake',
+    description: 'An energizing breakfast smoothie with a coffee kick.',
+    ingredients: [
+      Ingredient(
+        product: banana,
+        quantity: Quantity(
+            description: '1 medium', weightInGrams: 120, calories: 105),
+      ),
+      Ingredient(
+        product: espresso,
+        quantity:
+            Quantity(description: '1 shot', weightInGrams: 30, calories: 3),
+      ),
+      Ingredient(
+        product: almondMilk,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 60),
+      ),
+    ],
+    calories: 168,
+    preparation: Preparation(
+      shortDescription:
+          'A rich and creamy banana shake with a hint of espresso.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction: 'Peel the banana and add it to the blender.',
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add espresso and almond milk.',
+          tips: ['Cool the espresso slightly before adding.'],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until smooth and creamy.',
+          duration: const Duration(seconds: 30),
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve immediately in a glass.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin B6': 0.4,
+      'Calcium': 120.0,
+      'Potassium': 450.0,
+    },
+    categories: [
+      breakfastBoosters,
+    ],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 4,
+  ),
+  Recipe(
+    assetPath: 'assets/mango_oatmeal_smoothie',
+    name: 'Mango Oatmeal Smoothie',
+    description: 'A tropical and fiber-rich start to your day.',
+    ingredients: [
+      Ingredient(
+        product: mango,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 165, calories: 99),
+      ),
+      Ingredient(
+        product: rolledOats,
+        quantity:
+            Quantity(description: '1/4 cup', weightInGrams: 40, calories: 150),
+      ),
+      Ingredient(
+        product: almondMilk,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 60),
+      ),
+    ],
+    calories: 309,
+    preparation: Preparation(
+      shortDescription: 'A smooth and creamy blend of mango and oats.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction: 'Peel and dice the mango, then add it to the blender.',
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add rolled oats and almond milk.',
+          tips: ['Chill the mango beforehand for a colder smoothie.'],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until creamy.',
+          duration: const Duration(seconds: 40),
+          tips: ['Blend on high for a smooth texture.'],
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Pour into a glass and enjoy immediately.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 60.0,
+      'Vitamin A': 85.0,
+      'Calcium': 120.0,
+      'Iron': 2.0,
+    },
+    categories: [breakfastBoosters],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 5,
+  ),
+  Recipe(
+    assetPath: 'assets/berry_oat_smoothie',
+    name: 'Berry Oat Smoothie',
+    description: 'A fiber-packed smoothie with a delicious berry twist.',
+    ingredients: [
+      Ingredient(
+        product: strawberry,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 150, calories: 50),
+      ),
+      Ingredient(
+        product: blueberries,
+        quantity:
+            Quantity(description: '1/2 cup', weightInGrams: 75, calories: 42),
+      ),
+      Ingredient(
+        product: rolledOats,
+        quantity:
+            Quantity(description: '1/4 cup', weightInGrams: 40, calories: 150),
+      ),
+      Ingredient(
+        product: almondMilk,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 60),
+      ),
+    ],
+    calories: 302,
+    preparation: Preparation(
+      shortDescription:
+          'A nutrient-dense breakfast smoothie with berries and oats.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction:
+              'Wash the strawberries and blueberries, then add them to the blender.',
+          tips: ['Remove strawberry stems for better blending.'],
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add rolled oats and almond milk.',
+          tips: [
+            'Soak the oats in milk for 5 minutes if you want a smoother texture.'
+          ],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until smooth.',
+          duration: const Duration(seconds: 40),
+          tips: ['Stop halfway and scrape the blender sides for even mixing.'],
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve chilled in a tall glass.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 45.0,
+      'Vitamin A': 25.0,
+      'Calcium': 130.0,
+      'Iron': 1.8,
+    },
+    categories: [breakfastBoosters],
+    isVegan: true,
+    isChilled: true,
+    ranking: 4,
+  ),
+  Recipe(
+    assetPath: 'assets/peanut_butter_banana_shake',
+    name: 'Peanut Butter Banana Shake',
+    description:
+        'A creamy and protein-rich breakfast smoothie to kickstart your day.',
+    ingredients: [
+      Ingredient(
+        product: banana,
+        quantity:
+            Quantity(description: '1 large', weightInGrams: 136, calories: 121),
+      ),
+      Ingredient(
+        product: almondMilk,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 60),
+      ),
+      Ingredient(
+        product: peanutButter,
+        quantity:
+            Quantity(description: '2 tbsp', weightInGrams: 32, calories: 190),
+      ),
+    ],
+    calories: 371,
+    preparation: Preparation(
+      shortDescription: 'A creamy and nutty smoothie packed with energy.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction: 'Peel the banana and add it to the blender.',
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add almond milk and peanut butter to the blender.',
+          tips: ['Use frozen banana for a thicker consistency.'],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until smooth and creamy.',
+          duration: const Duration(seconds: 30),
+          tips: ['Blend on high for best results.'],
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Pour into a glass and serve immediately.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin E': 3.5,
+      'Vitamin B6': 0.6,
+      'Calcium': 120.0,
+      'Potassium': 470.0,
+    },
+    categories: [breakfastBoosters],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 5,
+  )
+];
+
 final fruityBlendsRecipes = [
   Recipe(
     assetPath: 'assets/berry_blast',
@@ -1234,5 +1546,5 @@ final kidsSpecialRecipes = [
         ),
       ],
     ),
-  )
+  ),
 ];

@@ -39,7 +39,6 @@ class Step {
   });
 
   Map<String, dynamic> toMap() {
-    print('ANKH: $tips');
     return {
       'stepNumber': stepNumber,
       'instruction': instruction,
@@ -50,8 +49,6 @@ class Step {
   }
 
   factory Step.fromMap(Map<String, dynamic> map) {
-    print('ANKH ${map['tips'].toString()}');
-    print('ANKH ${map['instruction'].toString()}');
     return Step(
       stepNumber: map['stepNumber'],
       instruction: map['instruction'],
