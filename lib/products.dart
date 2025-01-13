@@ -12,7 +12,7 @@ final spinach = Product(
 );
 final almondMilk = Product(
   name: 'Almond Milk',
-  category: 'Dairy Alternative',
+  category: 'Liquids',
   assetPath: 'assets/almond_milk.webp',
 );
 final strawberry = Product(
@@ -42,7 +42,7 @@ final pineapple = Product(
 );
 final yogurt = Product(
   name: 'Yogurt',
-  category: 'Dairy',
+  category: 'Liquids',
   assetPath: 'assets/yogurt.webp',
 );
 final honey = Product(
@@ -52,7 +52,7 @@ final honey = Product(
 );
 final coconutWater = Product(
   name: 'Coconut Water',
-  category: 'Beverage',
+  category: 'Liquids',
   assetPath: 'assets/coconut_water.webp',
 );
 final oranges = Product(
@@ -62,7 +62,7 @@ final oranges = Product(
 );
 final lemonJuice = Product(
   name: 'Lemon Juice',
-  category: 'Citrus',
+  category: 'Liquids',
   assetPath: 'assets/lemon_juice.webp',
 );
 final ice = Product(
@@ -112,7 +112,7 @@ final chiaSeeds = Product(
 );
 final chocolateMilk = Product(
   name: 'Chocolate Milk',
-  category: 'Dairy',
+  category: 'Liquids',
   assetPath: 'assets/chocolate_milk.webp',
 );
 final milk = Product(
@@ -129,28 +129,181 @@ final cinnamon = Product(
 final kale = Product(
   name: 'Kale',
   category: 'Leafy Greens',
-  assetPath: 'assets/kale.png',
+  assetPath: 'assets/kale.webp',
 );
 
 final avocado = Product(
   name: 'Avocado',
   category: 'Fruits',
-  assetPath: 'assets/avocado.png',
+  assetPath: 'assets/avocado.webp',
 );
 
 final cucumber = Product(
   name: 'Cucumber',
   category: 'Vegetables',
-  assetPath: 'assets/cucumber.png',
+  assetPath: 'assets/cucumber.webp',
 );
 
 final greenApple = Product(
   name: 'Green Apple',
   category: 'Fruits',
-  assetPath: 'assets/green_apple.png',
+  assetPath: 'assets/green_apple.webp',
+);
+final carrot = Product(
+  name: 'Carrot',
+  category: 'Vegetables',
+  assetPath: 'assets/carrot.webp',
+);
+final celery = Product(
+  name: 'Celery',
+  category: 'Vegetables',
+  assetPath: 'assets/celery.webp',
+);
+final beetroot = Product(
+  name: 'Beetroot',
+  category: 'Vegetables',
+  assetPath: 'assets/beetroot.webp',
+);
+final broccoli = Product(
+  name: 'Broccoli',
+  category: 'Vegetables',
+  assetPath: 'assets/broccoli.webp',
+);
+final cauliflower = Product(
+  name: 'Cauliflower',
+  category: 'Vegetables',
+  assetPath: 'assets/cauliflower.webp',
+);
+final zucchini = Product(
+  name: 'Zucchini',
+  category: 'Vegetables',
+  assetPath: 'assets/zucchini.webp',
+);
+final bellPepper = Product(
+  name: 'Bell Pepper',
+  category: 'Vegetables',
+  assetPath: 'assets/bellpepper.webp',
+);
+final parsley = Product(
+  name: 'Parsley',
+  category: 'Vegetables',
+  assetPath: 'assets/parsley.webp',
+);
+final mint = Product(
+  name: 'Mint',
+  category: 'Vegetables',
+  assetPath: 'assets/mint.webp',
+);
+final ginger = Product(
+  name: 'Ginger',
+  category: 'Vegetables',
+  assetPath: 'assets/ginger.webp',
+);
+final garlic = Product(
+  name: 'Garlic',
+  category: 'Vegetables',
+  assetPath: 'assets/garlic.webp',
+);
+final lettuce = Product(
+  name: 'Lettuce',
+  category: 'Vegetables',
+  assetPath: 'assets/lettuce.webp',
+);
+final coriander = Product(
+  name: 'Coriander',
+  category: 'Vegetables',
+  assetPath: 'assets/coriander.webp',
+);
+final fennel = Product(
+  name: 'Fennel',
+  category: 'Vegetables',
+  assetPath: 'assets/fennel.webp',
+);
+final leek = Product(
+  name: 'Leek',
+  category: 'Vegetables',
+  assetPath: 'assets/leek.webp',
+);
+
+final water = Product(
+  name: 'Water',
+  category: 'Liquids',
+  assetPath: 'assets/water.webp',
+);
+final soyMilk = Product(
+  name: 'Soy milk',
+  category: 'Liquids',
+  assetPath: 'assets/soymilk.webp',
+);
+
+final greenTea = Product(
+  name: 'Green tea',
+  category: 'Liquids',
+  assetPath: 'assets/greentea.webp',
+);
+
+final blackTea = Product(
+  name: 'Black tea',
+  category: 'Liquids',
+  assetPath: 'assets/blacktea.webp',
+);
+
+final espresso = Product(
+  name: 'Espresso',
+  category: 'Liquids',
+  assetPath: 'assets/espresso.webp',
+);
+
+final pineppleJuice = Product(
+  name: 'Pinapple Juice',
+  category: 'Liquids',
+  assetPath: 'assets/pinapplejuice.webp',
+);
+
+final limeJuice = Product(
+  name: 'Lime Juice',
+  category: 'Liquids',
+  assetPath: 'assets/limejuice.webp',
+);
+
+final appleJuice = Product(
+  name: 'Apple Juice',
+  category: 'Liquids',
+  assetPath: 'assets/applejuice.webp',
+);
+
+final oatMilk = Product(
+  name: 'Oat milk',
+  category: 'Liquids',
+  assetPath: 'assets/oat_milk.webp',
+);
+
+final rolledOats = Product(
+    name: 'Rolled Oats',
+    category: 'Grains',
+    assetPath: 'assets/rolled_oats.webp');
+final peanutButter = Product(
+  name: 'Peanut Butter',
+  category: 'Butters',
+  assetPath: 'assets/peanut_butter.webp',
 );
 
 final products = [
+  carrot,
+  leek,
+  fennel,
+  coriander,
+  lettuce,
+  garlic,
+  ginger,
+  mint,
+  parsley,
+  bellPepper,
+  zucchini,
+  cauliflower,
+  beetroot,
+  celery,
+  broccoli,
   apple,
   spinach,
   almondMilk,
@@ -178,5 +331,15 @@ final products = [
   chiaSeeds,
   chocolateMilk,
   milk,
-  cinnamon
+  cinnamon,
+  blackTea,
+  greenTea,
+  appleJuice,
+  limeJuice,
+  pineppleJuice,
+  soyMilk,
+  water,
+  oatMilk,
+  peanutButter,
+  rolledOats,
 ];

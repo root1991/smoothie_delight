@@ -3,6 +3,632 @@ import 'package:smoothie/offline_categories.dart';
 import 'package:smoothie/preparation.dart';
 import 'package:smoothie/products.dart';
 
+final detoxAndCleanseRecipes = [
+  Recipe(
+    assetPath: 'assets/cucumber_mint_cooler.webp',
+    name: 'Cucumber Mint Cooler',
+    description: 'A hydrating and refreshing smoothie to cleanse your body.',
+    ingredients: [
+      Ingredient(
+        product: cucumber,
+        quantity:
+            Quantity(description: '1 medium', weightInGrams: 200, calories: 32),
+      ),
+      Ingredient(
+        product: mint,
+        quantity:
+            Quantity(description: '1/4 cup', weightInGrams: 10, calories: 2),
+      ),
+      Ingredient(
+        product: lemonJuice,
+        quantity:
+            Quantity(description: '2 tbsp', weightInGrams: 30, calories: 8),
+      ),
+      Ingredient(
+        product: water,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 0),
+      ),
+    ],
+    calories: 42,
+    preparation: Preparation(
+      shortDescription: 'A light and refreshing cucumber-based detox smoothie.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction:
+              'Peel and chop the cucumber, then add it to the blender.',
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add fresh mint leaves and lemon juice.',
+          tips: ['Use cold water for a more refreshing drink.'],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Pour in the water and blend until smooth.',
+          duration: const Duration(seconds: 30),
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve chilled with a mint sprig garnish.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 25.0,
+      'Vitamin A': 15.0,
+      'Calcium': 20.0,
+      'Iron': 0.6,
+    },
+    categories: [
+      detoxAndCleanse,
+    ],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 5,
+  ),
+  Recipe(
+    assetPath: 'assets/green_apple_detox.webp',
+    name: 'Green Apple Detox',
+    description: 'A tangy green smoothie to help you cleanse and energize.',
+    ingredients: [
+      Ingredient(
+        product: greenApple,
+        quantity:
+            Quantity(description: '1 large', weightInGrams: 220, calories: 116),
+      ),
+      Ingredient(
+        product: kale,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 67, calories: 33),
+      ),
+      Ingredient(
+        product: water,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 0),
+      ),
+    ],
+    calories: 149,
+    preparation: Preparation(
+      shortDescription: 'A nutrient-rich smoothie perfect for detoxing.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction:
+              'Core and chop the green apple, then add it to the blender.',
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add kale and pour in water.',
+          tips: ['Remove kale stems for smoother blending.'],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until smooth.',
+          duration: const Duration(seconds: 40),
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve chilled with an optional apple slice garnish.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 48.0,
+      'Vitamin A': 70.0,
+      'Calcium': 80.0,
+      'Iron': 1.2,
+    },
+    categories: [
+      detoxAndCleanse,
+    ],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 5,
+  ),
+  Recipe(
+    assetPath: 'assets/lemon_ginger_flush.webp',
+    name: 'Lemon Ginger Flush',
+    description:
+        'A zesty smoothie with a kick of ginger for digestion support.',
+    ingredients: [
+      Ingredient(
+        product: lemonJuice,
+        quantity:
+            Quantity(description: '3 tbsp', weightInGrams: 45, calories: 12),
+      ),
+      Ingredient(
+        product: ginger,
+        quantity: Quantity(description: '1 tsp', weightInGrams: 5, calories: 2),
+      ),
+      Ingredient(
+        product: water,
+        quantity:
+            Quantity(description: '1.5 cups', weightInGrams: 360, calories: 0),
+      ),
+      Ingredient(
+        product: honey,
+        quantity:
+            Quantity(description: '1 tsp', weightInGrams: 7, calories: 21),
+      ),
+    ],
+    calories: 35,
+    preparation: Preparation(
+      shortDescription:
+          'A refreshing blend of lemon and ginger for detox and digestion.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction: 'Peel and grate the ginger, then add it to the blender.',
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add lemon juice, water, and honey.',
+          tips: ['Adjust honey for desired sweetness.'],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend on high speed for 20 seconds.',
+          duration: const Duration(seconds: 20),
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve with a lemon wedge for garnish.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 35.0,
+      'Calcium': 15.0,
+      'Iron': 0.3,
+    },
+    categories: [
+      detoxAndCleanse,
+    ],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 5,
+  ),
+  Recipe(
+    assetPath: 'assets/beetroot_bliss.webp',
+    name: 'Beetroot Bliss',
+    description:
+        'A vibrant smoothie with detoxifying beets and citrus flavors.',
+    ingredients: [
+      Ingredient(
+        product: beetroot,
+        quantity:
+            Quantity(description: '1 medium', weightInGrams: 200, calories: 43),
+      ),
+      Ingredient(
+        product: oranges,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 112),
+      ),
+      Ingredient(
+        product: water,
+        quantity:
+            Quantity(description: '1/2 cup', weightInGrams: 120, calories: 0),
+      ),
+    ],
+    calories: 155,
+    preparation: Preparation(
+      shortDescription:
+          'A nutrient-packed smoothie with earthy and sweet notes.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction:
+              'Peel and chop the beetroot, then add it to the blender.',
+          tips: ['Use pre-cooked beets for easier blending.'],
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add orange juice and water.',
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until smooth and vibrant.',
+          duration: const Duration(seconds: 30),
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve with an orange slice for garnish.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 65.0,
+      'Iron': 2.5,
+      'Folate': 120.0,
+      'Potassium': 450.0,
+    },
+    categories: [detoxAndCleanse],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 4,
+  ),
+  Recipe(
+    assetPath: 'assets/spinach_lemon_detox.webp',
+    name: 'Spinach Lemon Detox',
+    description: 'A light and zesty smoothie packed with greens and vitamin C.',
+    ingredients: [
+      Ingredient(
+        product: spinach,
+        quantity:
+            Quantity(description: '2 cups', weightInGrams: 60, calories: 14),
+      ),
+      Ingredient(
+        product: lemonJuice,
+        quantity:
+            Quantity(description: '2 tbsp', weightInGrams: 30, calories: 8),
+      ),
+      Ingredient(
+        product: water,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 0),
+      ),
+      Ingredient(
+        product: honey,
+        quantity:
+            Quantity(description: '1 tsp', weightInGrams: 7, calories: 21),
+      ),
+    ],
+    calories: 43,
+    preparation: Preparation(
+      shortDescription: 'A refreshing green smoothie with a citrus kick.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction: 'Wash the spinach thoroughly and add it to the blender.',
+          tips: ['Dry the spinach slightly to avoid excess water.'],
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add lemon juice, water, and honey.',
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until smooth.',
+          duration: const Duration(seconds: 25),
+          tips: ['Blend on high for the best texture.'],
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve chilled with a lemon wedge garnish.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 50.0,
+      'Vitamin A': 85.0,
+      'Iron': 1.6,
+    },
+    categories: [detoxAndCleanse],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 5,
+  )
+];
+
+final breakfastBoostersRecipes = [
+  Recipe(
+    assetPath: 'assets/apple_cinnamon_delight',
+    name: 'Apple Cinnamon Delight',
+    description: 'A warming and hearty breakfast smoothie.',
+    ingredients: [
+      Ingredient(
+        product: apple,
+        quantity: Quantity(
+          description: '1 medium',
+          weightInGrams: 200,
+          calories: 95,
+        ),
+      ),
+      Ingredient(
+        product: cinnamon,
+        quantity: Quantity(
+          description: '1/2 tsp',
+          weightInGrams: 1,
+          calories: 3,
+        ),
+      ),
+      Ingredient(
+        product: oatMilk,
+        quantity: Quantity(
+          description: '1 cup',
+          weightInGrams: 240,
+          calories: 120,
+        ),
+      ),
+    ],
+    calories: 218,
+    preparation: Preparation(
+      shortDescription:
+          'A smoothie with the sweet taste of apples and cinnamon.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction: 'Core and slice the apple, then add it to the blender.',
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Sprinkle cinnamon and pour in oat milk.',
+          tips: ['Use chilled oat milk for a refreshing smoothie.'],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until smooth.',
+          duration: const Duration(seconds: 30),
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve with a sprinkle of extra cinnamon on top.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 12.0,
+      'Calcium': 150.0,
+      'Iron': 1.2,
+    },
+    categories: [breakfastBoosters],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 5,
+  ),
+  Recipe(
+    assetPath: 'assets/banana_espresso_shake',
+    name: 'Banana Espresso Shake',
+    description: 'An energizing breakfast smoothie with a coffee kick.',
+    ingredients: [
+      Ingredient(
+        product: banana,
+        quantity: Quantity(
+            description: '1 medium', weightInGrams: 120, calories: 105),
+      ),
+      Ingredient(
+        product: espresso,
+        quantity:
+            Quantity(description: '1 shot', weightInGrams: 30, calories: 3),
+      ),
+      Ingredient(
+        product: almondMilk,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 60),
+      ),
+    ],
+    calories: 168,
+    preparation: Preparation(
+      shortDescription:
+          'A rich and creamy banana shake with a hint of espresso.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction: 'Peel the banana and add it to the blender.',
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add espresso and almond milk.',
+          tips: ['Cool the espresso slightly before adding.'],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until smooth and creamy.',
+          duration: const Duration(seconds: 30),
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve immediately in a glass.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin B6': 0.4,
+      'Calcium': 120.0,
+      'Potassium': 450.0,
+    },
+    categories: [
+      breakfastBoosters,
+    ],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 4,
+  ),
+  Recipe(
+    assetPath: 'assets/mango_oatmeal_smoothie',
+    name: 'Mango Oatmeal Smoothie',
+    description: 'A tropical and fiber-rich start to your day.',
+    ingredients: [
+      Ingredient(
+        product: mango,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 165, calories: 99),
+      ),
+      Ingredient(
+        product: rolledOats,
+        quantity:
+            Quantity(description: '1/4 cup', weightInGrams: 40, calories: 150),
+      ),
+      Ingredient(
+        product: almondMilk,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 60),
+      ),
+    ],
+    calories: 309,
+    preparation: Preparation(
+      shortDescription: 'A smooth and creamy blend of mango and oats.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction: 'Peel and dice the mango, then add it to the blender.',
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add rolled oats and almond milk.',
+          tips: ['Chill the mango beforehand for a colder smoothie.'],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until creamy.',
+          duration: const Duration(seconds: 40),
+          tips: ['Blend on high for a smooth texture.'],
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Pour into a glass and enjoy immediately.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 60.0,
+      'Vitamin A': 85.0,
+      'Calcium': 120.0,
+      'Iron': 2.0,
+    },
+    categories: [breakfastBoosters],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 5,
+  ),
+  Recipe(
+    assetPath: 'assets/berry_oat_smoothie',
+    name: 'Berry Oat Smoothie',
+    description: 'A fiber-packed smoothie with a delicious berry twist.',
+    ingredients: [
+      Ingredient(
+        product: strawberry,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 150, calories: 50),
+      ),
+      Ingredient(
+        product: blueberries,
+        quantity:
+            Quantity(description: '1/2 cup', weightInGrams: 75, calories: 42),
+      ),
+      Ingredient(
+        product: rolledOats,
+        quantity:
+            Quantity(description: '1/4 cup', weightInGrams: 40, calories: 150),
+      ),
+      Ingredient(
+        product: almondMilk,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 60),
+      ),
+    ],
+    calories: 302,
+    preparation: Preparation(
+      shortDescription:
+          'A nutrient-dense breakfast smoothie with berries and oats.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction:
+              'Wash the strawberries and blueberries, then add them to the blender.',
+          tips: ['Remove strawberry stems for better blending.'],
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add rolled oats and almond milk.',
+          tips: [
+            'Soak the oats in milk for 5 minutes if you want a smoother texture.'
+          ],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until smooth.',
+          duration: const Duration(seconds: 40),
+          tips: ['Stop halfway and scrape the blender sides for even mixing.'],
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve chilled in a tall glass.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 45.0,
+      'Vitamin A': 25.0,
+      'Calcium': 130.0,
+      'Iron': 1.8,
+    },
+    categories: [breakfastBoosters],
+    isVegan: true,
+    isChilled: true,
+    ranking: 4,
+  ),
+  Recipe(
+    assetPath: 'assets/peanut_butter_banana_shake',
+    name: 'Peanut Butter Banana Shake',
+    description:
+        'A creamy and protein-rich breakfast smoothie to kickstart your day.',
+    ingredients: [
+      Ingredient(
+        product: banana,
+        quantity:
+            Quantity(description: '1 large', weightInGrams: 136, calories: 121),
+      ),
+      Ingredient(
+        product: almondMilk,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 60),
+      ),
+      Ingredient(
+        product: peanutButter,
+        quantity:
+            Quantity(description: '2 tbsp', weightInGrams: 32, calories: 190),
+      ),
+    ],
+    calories: 371,
+    preparation: Preparation(
+      shortDescription: 'A creamy and nutty smoothie packed with energy.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction: 'Peel the banana and add it to the blender.',
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add almond milk and peanut butter to the blender.',
+          tips: ['Use frozen banana for a thicker consistency.'],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until smooth and creamy.',
+          duration: const Duration(seconds: 30),
+          tips: ['Blend on high for best results.'],
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Pour into a glass and serve immediately.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin E': 3.5,
+      'Vitamin B6': 0.6,
+      'Calcium': 120.0,
+      'Potassium': 470.0,
+    },
+    categories: [breakfastBoosters],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 5,
+  )
+];
+
 final fruityBlendsRecipes = [
   Recipe(
     assetPath: 'assets/berry_blast',
@@ -1234,5 +1860,5 @@ final kidsSpecialRecipes = [
         ),
       ],
     ),
-  )
+  ),
 ];

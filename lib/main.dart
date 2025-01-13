@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:smoothie/db/database_manager.dart';
 import 'package:smoothie/models.dart';
 import 'package:smoothie/notifiers/favorite_state_notifier.dart';
+import 'package:smoothie/offline_categories.dart';
 import 'package:smoothie/offline_recipes.dart';
 import 'package:smoothie/repository/recipe_local_data_source.dart';
 import 'package:smoothie/screens/main/main_screen.dart';
@@ -13,9 +14,9 @@ import 'package:sqflite/sqflite.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await resetDatabase();
+  await resetDatabase();
   await initializeDatabase();
-  //await saveAllRecipes();
+  await saveAllRecipes();
   runApp(const ProviderScope(child: SmoothieApp()));
 }
 
@@ -70,6 +71,13 @@ Future<void> saveAllRecipes() async {
   for (final recipe in kidsSpecialRecipes) {
     await db.insertRecipe(recipe);
   }
+  for (final recipe in breakfastBoostersRecipes) {
+    await db.insertRecipe(recipe);
+  }
+  for (final recipe in detoxAndCleanseRecipes) {
+    await db.insertRecipe(recipe);
+  }
+
   await db.populateProductsFromIngredients();
   print('All recipes saved to database.');
 }
