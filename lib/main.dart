@@ -14,9 +14,9 @@ import 'package:sqflite/sqflite.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //await resetDatabase();
+  await resetDatabase();
   await initializeDatabase();
-  //await saveAllRecipes();
+  await saveAllRecipes();
   runApp(const ProviderScope(child: SmoothieApp()));
 }
 
@@ -74,6 +74,10 @@ Future<void> saveAllRecipes() async {
   for (final recipe in breakfastBoostersRecipes) {
     await db.insertRecipe(recipe);
   }
+  for (final recipe in detoxAndCleanseRecipes) {
+    await db.insertRecipe(recipe);
+  }
+
   await db.populateProductsFromIngredients();
   print('All recipes saved to database.');
 }

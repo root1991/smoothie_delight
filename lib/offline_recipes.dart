@@ -3,6 +3,320 @@ import 'package:smoothie/offline_categories.dart';
 import 'package:smoothie/preparation.dart';
 import 'package:smoothie/products.dart';
 
+final detoxAndCleanseRecipes = [
+  Recipe(
+    assetPath: 'assets/cucumber_mint_cooler.webp',
+    name: 'Cucumber Mint Cooler',
+    description: 'A hydrating and refreshing smoothie to cleanse your body.',
+    ingredients: [
+      Ingredient(
+        product: cucumber,
+        quantity:
+            Quantity(description: '1 medium', weightInGrams: 200, calories: 32),
+      ),
+      Ingredient(
+        product: mint,
+        quantity:
+            Quantity(description: '1/4 cup', weightInGrams: 10, calories: 2),
+      ),
+      Ingredient(
+        product: lemonJuice,
+        quantity:
+            Quantity(description: '2 tbsp', weightInGrams: 30, calories: 8),
+      ),
+      Ingredient(
+        product: water,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 0),
+      ),
+    ],
+    calories: 42,
+    preparation: Preparation(
+      shortDescription: 'A light and refreshing cucumber-based detox smoothie.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction:
+              'Peel and chop the cucumber, then add it to the blender.',
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add fresh mint leaves and lemon juice.',
+          tips: ['Use cold water for a more refreshing drink.'],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Pour in the water and blend until smooth.',
+          duration: const Duration(seconds: 30),
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve chilled with a mint sprig garnish.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 25.0,
+      'Vitamin A': 15.0,
+      'Calcium': 20.0,
+      'Iron': 0.6,
+    },
+    categories: [
+      detoxAndCleanse,
+    ],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 5,
+  ),
+  Recipe(
+    assetPath: 'assets/green_apple_detox.webp',
+    name: 'Green Apple Detox',
+    description: 'A tangy green smoothie to help you cleanse and energize.',
+    ingredients: [
+      Ingredient(
+        product: greenApple,
+        quantity:
+            Quantity(description: '1 large', weightInGrams: 220, calories: 116),
+      ),
+      Ingredient(
+        product: kale,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 67, calories: 33),
+      ),
+      Ingredient(
+        product: water,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 0),
+      ),
+    ],
+    calories: 149,
+    preparation: Preparation(
+      shortDescription: 'A nutrient-rich smoothie perfect for detoxing.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction:
+              'Core and chop the green apple, then add it to the blender.',
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add kale and pour in water.',
+          tips: ['Remove kale stems for smoother blending.'],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until smooth.',
+          duration: const Duration(seconds: 40),
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve chilled with an optional apple slice garnish.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 48.0,
+      'Vitamin A': 70.0,
+      'Calcium': 80.0,
+      'Iron': 1.2,
+    },
+    categories: [
+      detoxAndCleanse,
+    ],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 5,
+  ),
+  Recipe(
+    assetPath: 'assets/lemon_ginger_flush.webp',
+    name: 'Lemon Ginger Flush',
+    description:
+        'A zesty smoothie with a kick of ginger for digestion support.',
+    ingredients: [
+      Ingredient(
+        product: lemonJuice,
+        quantity:
+            Quantity(description: '3 tbsp', weightInGrams: 45, calories: 12),
+      ),
+      Ingredient(
+        product: ginger,
+        quantity: Quantity(description: '1 tsp', weightInGrams: 5, calories: 2),
+      ),
+      Ingredient(
+        product: water,
+        quantity:
+            Quantity(description: '1.5 cups', weightInGrams: 360, calories: 0),
+      ),
+      Ingredient(
+        product: honey,
+        quantity:
+            Quantity(description: '1 tsp', weightInGrams: 7, calories: 21),
+      ),
+    ],
+    calories: 35,
+    preparation: Preparation(
+      shortDescription:
+          'A refreshing blend of lemon and ginger for detox and digestion.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction: 'Peel and grate the ginger, then add it to the blender.',
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add lemon juice, water, and honey.',
+          tips: ['Adjust honey for desired sweetness.'],
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend on high speed for 20 seconds.',
+          duration: const Duration(seconds: 20),
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve with a lemon wedge for garnish.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 35.0,
+      'Calcium': 15.0,
+      'Iron': 0.3,
+    },
+    categories: [
+      detoxAndCleanse,
+    ],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 5,
+  ),
+  Recipe(
+    assetPath: 'assets/beetroot_bliss.webp',
+    name: 'Beetroot Bliss',
+    description:
+        'A vibrant smoothie with detoxifying beets and citrus flavors.',
+    ingredients: [
+      Ingredient(
+        product: beetroot,
+        quantity:
+            Quantity(description: '1 medium', weightInGrams: 200, calories: 43),
+      ),
+      Ingredient(
+        product: oranges,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 112),
+      ),
+      Ingredient(
+        product: water,
+        quantity:
+            Quantity(description: '1/2 cup', weightInGrams: 120, calories: 0),
+      ),
+    ],
+    calories: 155,
+    preparation: Preparation(
+      shortDescription:
+          'A nutrient-packed smoothie with earthy and sweet notes.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction:
+              'Peel and chop the beetroot, then add it to the blender.',
+          tips: ['Use pre-cooked beets for easier blending.'],
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add orange juice and water.',
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until smooth and vibrant.',
+          duration: const Duration(seconds: 30),
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve with an orange slice for garnish.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 65.0,
+      'Iron': 2.5,
+      'Folate': 120.0,
+      'Potassium': 450.0,
+    },
+    categories: [detoxAndCleanse],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 4,
+  ),
+  Recipe(
+    assetPath: 'assets/spinach_lemon_detox.webp',
+    name: 'Spinach Lemon Detox',
+    description: 'A light and zesty smoothie packed with greens and vitamin C.',
+    ingredients: [
+      Ingredient(
+        product: spinach,
+        quantity:
+            Quantity(description: '2 cups', weightInGrams: 60, calories: 14),
+      ),
+      Ingredient(
+        product: lemonJuice,
+        quantity:
+            Quantity(description: '2 tbsp', weightInGrams: 30, calories: 8),
+      ),
+      Ingredient(
+        product: water,
+        quantity:
+            Quantity(description: '1 cup', weightInGrams: 240, calories: 0),
+      ),
+      Ingredient(
+        product: honey,
+        quantity:
+            Quantity(description: '1 tsp', weightInGrams: 7, calories: 21),
+      ),
+    ],
+    calories: 43,
+    preparation: Preparation(
+      shortDescription: 'A refreshing green smoothie with a citrus kick.',
+      steps: [
+        Step(
+          stepNumber: 1,
+          instruction: 'Wash the spinach thoroughly and add it to the blender.',
+          tips: ['Dry the spinach slightly to avoid excess water.'],
+        ),
+        Step(
+          stepNumber: 2,
+          instruction: 'Add lemon juice, water, and honey.',
+        ),
+        Step(
+          stepNumber: 3,
+          instruction: 'Blend until smooth.',
+          duration: const Duration(seconds: 25),
+          tips: ['Blend on high for the best texture.'],
+        ),
+        Step(
+          stepNumber: 4,
+          instruction: 'Serve chilled with a lemon wedge garnish.',
+        ),
+      ],
+    ),
+    vitamins: {
+      'Vitamin C': 50.0,
+      'Vitamin A': 85.0,
+      'Iron': 1.6,
+    },
+    categories: [detoxAndCleanse],
+    isVegan: true,
+    isChilled: true,
+    isOffline: true,
+    ranking: 5,
+  )
+];
+
 final breakfastBoostersRecipes = [
   Recipe(
     assetPath: 'assets/apple_cinnamon_delight',
