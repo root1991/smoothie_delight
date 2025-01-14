@@ -16,7 +16,8 @@ class MainScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Smoothie Delight'),
+        title: Text(appbarTitle(selectedIndex)),
+        //backgroundColor: Colors.green.withOpacity(0.4),
       ),
       body: IndexedStack(
         index: selectedIndex,
@@ -59,5 +60,20 @@ class MainScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  String appbarTitle(int selectedIndex) {
+    switch (selectedIndex) {
+      case 0:
+        return 'Smoothie Categories';
+      case 1:
+        return 'Ingredients';
+      case 2:
+        return 'Smoothie of the day';
+      case 3:
+        return 'My favorites';
+      default:
+        return '';
+    }
   }
 }

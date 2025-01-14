@@ -14,9 +14,9 @@ import 'package:sqflite/sqflite.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await resetDatabase();
+  //await resetDatabase();
   await initializeDatabase();
-  await saveAllRecipes();
+  //await saveAllRecipes();
   runApp(const ProviderScope(child: SmoothieApp()));
 }
 

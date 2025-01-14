@@ -103,15 +103,25 @@ class DailySmoothieTab extends ConsumerWidget {
     final currentPage = ref.watch(pageIndexProvider);
 
     void nextPage() {
-      if (currentPage < 5) {
+      if (currentPage < 4) {
         ref.read(pageIndexProvider.notifier).state++;
         pageController.animateToPage(
           currentPage + 1,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
         );
-      } else {
-        //Navigator.pop(context);
+      }
+    }
+
+    void back() {
+      if (currentPage != 0) {
+        ref.read(pageIndexProvider.notifier).state--;
+
+        pageController.animateToPage(
+          currentPage - 1,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
       }
     }
 
@@ -121,10 +131,9 @@ class DailySmoothieTab extends ConsumerWidget {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           LetsDoItPage(nextPage: nextPage),
-          IngredientSelectionPage(nextPage),
-          MoodSelectionPage(nextPage),
+          IngredientSelectionPage(nextPage, back),
+          MoodSelectionPage(nextPage, back),
           GoalPage(index: 4, nextPage: nextPage),
-          GoalPage(index: 5, nextPage: nextPage),
         ],
       ),
     );
@@ -187,21 +196,33 @@ class GoalPage extends StatelessWidget {
 
 class MoodSelectionPage extends ConsumerWidget {
   final VoidCallback nextPage;
+  final VoidCallback back;
 
-  const MoodSelectionPage(this.nextPage, {super.key});
+  const MoodSelectionPage(this.nextPage, this.back, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedMood = ref.watch(selectedMoodProvider);
     return Column(
       children: [
-        const Text(
-          'How do you feel?',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 25,
-          ),
+        Row(
+          children: [
+            IconButton(
+              onPressed: back,
+              icon: const Icon(Icons.arrow_back_ios),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 16, bottom: 16, right: 16),
+              child: Text(
+                'How do you feel?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+          ],
         ),
         Expanded(
           child: Padding(
@@ -302,8 +323,9 @@ class MoodSelectionPage extends ConsumerWidget {
 }
 
 class IngredientSelectionPage extends ConsumerWidget {
-  const IngredientSelectionPage(this.nextPage, {super.key});
+  const IngredientSelectionPage(this.nextPage, this.back, {super.key});
   final VoidCallback nextPage;
+  final VoidCallback back;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -312,16 +334,24 @@ class IngredientSelectionPage extends ConsumerWidget {
 
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            'What do you have at home?',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 25,
+        Row(
+          children: [
+            IconButton(
+              onPressed: back,
+              icon: const Icon(Icons.arrow_back_ios),
             ),
-          ),
+            const Padding(
+              padding: EdgeInsets.only(top: 16, bottom: 16, right: 16),
+              child: Text(
+                'What do you have at home?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+          ],
         ),
         Expanded(
           child: productsAsync.when(

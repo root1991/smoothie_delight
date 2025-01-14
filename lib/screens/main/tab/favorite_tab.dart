@@ -42,7 +42,9 @@ class FavoritesTab extends ConsumerWidget {
                   children: [
                     Expanded(
                       child: Image.asset(
-                        '${recipe.assetPath}.webp',
+                        recipe.assetPath.contains('webp')
+                            ? recipe.assetPath
+                            : '${recipe.assetPath}.webp',
                         fit: BoxFit.cover,
                       ),
                     ),
