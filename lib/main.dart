@@ -10,6 +10,7 @@ import 'package:smoothie/offline_categories.dart';
 import 'package:smoothie/offline_recipes.dart';
 import 'package:smoothie/repository/recipe_local_data_source.dart';
 import 'package:smoothie/screens/main/main_screen.dart';
+import 'package:smoothie/screens/main/tab/daily_smoothy_tab.dart';
 import 'package:sqflite/sqflite.dart';
 
 Future<void> main() async {
@@ -40,6 +41,14 @@ final veganRecipesByCategoryProvider =
     FutureProvider.family<List<Recipe>, String>((ref, categoryName) async {
   final db = RecipeLocalDataSource();
   return await db.fetchVeganRecipesByCategory(categoryName);
+});
+
+final dailySmoothieProvider = FutureProvider<Recipe>((ref) async {
+  final db = RecipeLocalDataSource();
+  final selectedIngredients = ref.watch(selectedIngredientsProvider);
+  final mood = ref.watch(selectedMoodProvider);
+
+  return db.getDailySmoothie(selectedIngredients, mood?.products ?? []);
 });
 
 final ingredientCountProvider =

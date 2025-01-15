@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:smoothie/db/database_manager.dart';
 import 'package:smoothie/models.dart';
 import 'package:smoothie/preparation.dart';
@@ -209,6 +211,39 @@ class RecipeLocalDataSource {
   ''', [productName]);
 
     return _mapRecipes(result);
+  }
+
+  Future<Recipe> getDailySmoothie(
+      List<Product> moodIngredients, List<Product> existingIngredients) async {
+    final db = await dbHelper.database;
+
+    final existingStrings =
+        existingIngredients.map((ingredient) => ingredient.name).toList();
+
+    final moodStrings =
+        moodIngredients.map((ingredient) => ingredient.name).toList();
+
+    final prioritizedIngredients = {...existingStrings, ...moodStrings}.toSet();
+
+    final ingredientPlaceholders =
+        List.filled(prioritizedIngredients.length, '?').join(',');
+    final result = await db.rawQuery('''
+      SELECT r.*, COUNT(ri.productId) as matchCount
+      FROM recipes r
+      INNER JOIN recipe_ingredients ri ON r.id = ri.recipeId
+      WHERE ri.productId IN ($ingredientPlaceholders)
+      GROUP BY r.id
+      ORDER BY matchCount DESC
+    ''', prioritizedIngredients.toList());
+
+    final topMatchCount = result.first['matchCount'] as int;
+
+    final topMatches = result.where((row) {
+      return row['matchCount'] == topMatchCount;
+    }).toList();
+
+    final smoothiesOfDay = await _mapRecipes(topMatches);
+    return smoothiesOfDay.first;
   }
 
   Future<List<Recipe>> fetchRecipesByCategory(String categoryName) async {

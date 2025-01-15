@@ -17,7 +17,7 @@ class Mood {
 }
 
 final pageIndexProvider = StateProvider<int>((ref) => 0);
-final selectedIngredientsProvider = StateProvider<List<String>>((ref) => []);
+final selectedIngredientsProvider = StateProvider<List<Product>>((ref) => []);
 final selectedMoodProvider = StateProvider<Mood?>((ref) => null);
 final moods = [
   Mood(
@@ -140,7 +140,7 @@ class DailySmoothieTab extends ConsumerWidget {
   }
 }
 
-class GoalPage extends StatelessWidget {
+class GoalPage extends ConsumerWidget {
   final int index;
   final VoidCallback nextPage;
 
@@ -151,7 +151,10 @@ class GoalPage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dailySmoothie = ref.watch(dailySmoothieProvider);
+
+    print(dailySmoothie.value?.name ?? 'no data');
     List<String> goalTitles = [
       'Energy Boost',
       'Recovery',
@@ -365,14 +368,13 @@ class IngredientSelectionPage extends ConsumerWidget {
               itemCount: products.length,
               itemBuilder: (context, index) {
                 final product = products[index];
-                final isSelected = selectedIngredients.contains(product.name);
+                final isSelected = selectedIngredients.contains(product);
 
                 return GestureDetector(
                   onTap: () {
                     ref.read(selectedIngredientsProvider.notifier).state = [
-                      ...selectedIngredients
-                          .where((item) => item != product.name),
-                      if (!isSelected) product.name,
+                      ...selectedIngredients.where((item) => item != product),
+                      if (!isSelected) product,
                     ];
                   },
                   child: Stack(
