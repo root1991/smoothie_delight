@@ -243,7 +243,9 @@ class RecipeLocalDataSource {
     }).toList();
 
     final smoothiesOfDay = await _mapRecipes(topMatches);
-    return smoothiesOfDay.first;
+
+    final random = Random();
+    return smoothiesOfDay[random.nextInt(smoothiesOfDay.length)];
   }
 
   Future<List<Recipe>> fetchRecipesByCategory(String categoryName) async {

@@ -133,18 +133,18 @@ class DailySmoothieTab extends ConsumerWidget {
           LetsDoItPage(nextPage: nextPage),
           IngredientSelectionPage(nextPage, back),
           MoodSelectionPage(nextPage, back),
-          GoalPage(index: 4, nextPage: nextPage),
+          DailySmoothieResultPage(index: 4, nextPage: nextPage),
         ],
       ),
     );
   }
 }
 
-class GoalPage extends ConsumerWidget {
+class DailySmoothieResultPage extends ConsumerWidget {
   final int index;
   final VoidCallback nextPage;
 
-  const GoalPage({
+  const DailySmoothieResultPage({
     super.key,
     required this.index,
     required this.nextPage,
@@ -154,45 +154,42 @@ class GoalPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dailySmoothie = ref.watch(dailySmoothieProvider);
 
-    print(dailySmoothie.value?.name ?? 'no data');
-    List<String> goalTitles = [
-      'Energy Boost',
-      'Recovery',
-      'Detox',
-      'Immunity Boost',
-      'Healthy Skin',
-      'Bone Health'
-    ];
-
-    return Column(
-      children: [
-        Center(
-          child: Text(
-            goalTitles[index],
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: nextPage,
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 40,
-              vertical: 15,
+    return dailySmoothie.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Center(child: Text('Error: $error')),
+      data: (recipe) => Column(
+        children: [
+          Center(
+            child: Text(
+              recipe.name,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-          child: const Text(
-            'Next',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
+          ElevatedButton(
+            onPressed: nextPage,
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 40,
+                vertical: 15,
+              ),
+            ),
+            child: const Text(
+              'Next',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
