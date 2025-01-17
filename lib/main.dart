@@ -104,6 +104,21 @@ final productsProvider = FutureProvider<List<Product>>((ref) async {
   final db = RecipeLocalDataSource();
   return db.loadProducts();
 });
+final crossedItemsProvider = StateNotifierProvider.family<CrossedItemsNotifier,
+    Set<Product>, List<Product>>((ref, missingIngredients) {
+  return CrossedItemsNotifier(missingIngredients.toSet());
+});
+
+class CrossedItemsNotifier extends StateNotifier<Set<Product>> {
+  CrossedItemsNotifier(Set<Product> initialItems) : super(initialItems);
+  void toggleItem(Product item) {
+    if (state.contains(item)) {
+      state = state.difference({item});
+    } else {
+      state = state.union({item});
+    }
+  }
+}
 
 final selectedIndexProvider = StateProvider<int>((ref) => 0);
 

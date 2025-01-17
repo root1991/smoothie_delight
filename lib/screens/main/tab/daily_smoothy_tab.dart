@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smoothie/main.dart';
@@ -153,39 +155,77 @@ class DailySmoothieResultPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dailySmoothie = ref.watch(dailySmoothieProvider);
+    final missingIngredients = ref.watch(selectedIngredientsProvider);
+    final crossedItems = ref.watch(crossedItemsProvider(missingIngredients));
 
     return dailySmoothie.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stack) => Center(child: Text('Error: $error')),
-      data: (recipe) => Column(
-        children: [
-          Center(
-            child: Text(
-              recipe.name,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+      data: (recipe) => CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: true,
+            expandedHeight: 250,
+            flexibleSpace: FlexibleSpaceBar(
+              title: const Text('Your daily smoothie is:'),
+              background: Image.asset(
+                recipe.assetPath,
+                fit: BoxFit.cover,
               ),
             ),
           ),
-          ElevatedButton(
-            onPressed: nextPage,
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 40,
-                vertical: 15,
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    recipe.name,
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'This is something missing:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                ],
               ),
             ),
-            child: const Text(
-              'Next',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final ingredient = missingIngredients[index];
+                final isCrossed = crossedItems.contains(ingredient);
+                return ListTile(
+                  leading: Image.asset(
+                    ingredient.assetPath,
+                    width: 40,
+                    height: 40,
+                  ),
+                  title: Text(
+                    ingredient.name,
+                    style: TextStyle(
+                      decoration: isCrossed ? TextDecoration.lineThrough : null,
+                      color: isCrossed ? Colors.grey : null,
+                    ),
+                  ),
+                  trailing: Checkbox(
+                    value: isCrossed,
+                    onChanged: (_) {
+                      ref
+                          .read(
+                              crossedItemsProvider(missingIngredients).notifier)
+                          .toggleItem(ingredient);
+                    },
+                  ),
+                );
+              },
+              childCount: missingIngredients.length,
             ),
           ),
         ],
