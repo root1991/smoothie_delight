@@ -165,11 +165,20 @@ class DailySmoothieResultPage extends ConsumerWidget {
         slivers: [
           SliverAppBar(
             pinned: true,
-            expandedHeight: 250,
+            expandedHeight: 350,
             flexibleSpace: FlexibleSpaceBar(
-              title: const Text('Your daily smoothie is:'),
+              title: Expanded(
+                child: Container(
+                  color: Colors.black45,
+                  child: const Text(
+                    'Your daily smoothie is:',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
               background: Image.asset(
-                recipe.assetPath,
+                '${recipe.assetPath}.webp',
                 fit: BoxFit.cover,
               ),
             ),
@@ -188,7 +197,7 @@ class DailySmoothieResultPage extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   const Text(
-                    'This is something missing:',
+                    'Here is something you need:',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
