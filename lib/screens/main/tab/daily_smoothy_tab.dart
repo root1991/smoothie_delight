@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smoothie/main.dart';
@@ -21,6 +19,26 @@ class Mood {
 final pageIndexProvider = StateProvider<int>((ref) => 0);
 final selectedIngredientsProvider = StateProvider<List<Product>>((ref) => []);
 final selectedMoodProvider = StateProvider<Mood?>((ref) => null);
+
+final missingIngredientsProvider = FutureProvider<List<Product>>((ref) async {
+  final selectedIngredients = ref.watch(selectedIngredientsProvider);
+  final dailySmoothieAsync = await ref.watch(dailySmoothieProvider.future);
+
+  for (var i = 0; i < dailySmoothieAsync.ingredients.length; i++) {
+    print('ANKH ${dailySmoothieAsync.ingredients[i].product.assetPath}');
+  }
+
+  final smoothieProducts = dailySmoothieAsync.ingredients
+      .map((ingredient) => ingredient.product)
+      .toSet();
+  final selectedProductNames =
+      selectedIngredients.map((product) => product.name).toSet();
+  final missingProducts = smoothieProducts.where((product) {
+    return !selectedProductNames.contains(product.name);
+  }).toList();
+  return missingProducts;
+});
+
 final moods = [
   Mood(
     name: 'Energetic',
@@ -155,8 +173,7 @@ class DailySmoothieResultPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dailySmoothie = ref.watch(dailySmoothieProvider);
-    final missingIngredients = ref.watch(selectedIngredientsProvider);
-    final crossedItems = ref.watch(crossedItemsProvider(missingIngredients));
+    final missingIngredients = ref.watch(missingIngredientsProvider);
 
     return dailySmoothie.when(
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -167,14 +184,12 @@ class DailySmoothieResultPage extends ConsumerWidget {
             pinned: true,
             expandedHeight: 350,
             flexibleSpace: FlexibleSpaceBar(
-              title: Expanded(
-                child: Container(
-                  color: Colors.black45,
-                  child: const Text(
-                    'Your daily smoothie is:',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w600),
-                  ),
+              title: Container(
+                color: Colors.black45,
+                child: const Text(
+                  'Your daily smoothie is:',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600),
                 ),
               ),
               background: Image.asset(
@@ -205,38 +220,45 @@ class DailySmoothieResultPage extends ConsumerWidget {
               ),
             ),
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final ingredient = missingIngredients[index];
-                final isCrossed = crossedItems.contains(ingredient);
-                return ListTile(
-                  leading: Image.asset(
-                    ingredient.assetPath,
-                    width: 40,
-                    height: 40,
-                  ),
-                  title: Text(
-                    ingredient.name,
-                    style: TextStyle(
-                      decoration: isCrossed ? TextDecoration.lineThrough : null,
-                      color: isCrossed ? Colors.grey : null,
-                    ),
-                  ),
-                  trailing: Checkbox(
-                    value: isCrossed,
-                    onChanged: (_) {
-                      ref
-                          .read(
-                              crossedItemsProvider(missingIngredients).notifier)
-                          .toggleItem(ingredient);
+          missingIngredients.when(
+              data: (List<Product> data) {
+                final crossedItems = ref.watch(crossedItemsProvider(data));
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final ingredient = data[index];
+
+                      final isCrossed = crossedItems.contains(ingredient);
+                      return ListTile(
+                        leading: Image.asset(
+                          ingredient.assetPath,
+                          width: 40,
+                          height: 40,
+                        ),
+                        title: Text(
+                          ingredient.name,
+                          style: TextStyle(
+                            decoration:
+                                isCrossed ? TextDecoration.lineThrough : null,
+                            color: isCrossed ? Colors.grey : null,
+                          ),
+                        ),
+                        trailing: Checkbox(
+                          value: isCrossed,
+                          onChanged: (_) {
+                            ref
+                                .read(crossedItemsProvider(data).notifier)
+                                .toggleItem(ingredient);
+                          },
+                        ),
+                      );
                     },
+                    childCount: data.length,
                   ),
                 );
               },
-              childCount: missingIngredients.length,
-            ),
-          ),
+              error: (Object error, StackTrace stackTrace) => const SizedBox(),
+              loading: () => const SizedBox()),
         ],
       ),
     );
