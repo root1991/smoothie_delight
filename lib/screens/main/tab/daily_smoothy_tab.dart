@@ -24,10 +24,6 @@ final missingIngredientsProvider = FutureProvider<List<Product>>((ref) async {
   final selectedIngredients = ref.watch(selectedIngredientsProvider);
   final dailySmoothieAsync = await ref.watch(dailySmoothieProvider.future);
 
-  for (var i = 0; i < dailySmoothieAsync.ingredients.length; i++) {
-    print('ANKH ${dailySmoothieAsync.ingredients[i].product.assetPath}');
-  }
-
   final smoothieProducts = dailySmoothieAsync.ingredients
       .map((ingredient) => ingredient.product)
       .toSet();
@@ -212,7 +208,7 @@ class DailySmoothieResultPage extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   const Text(
-                    'Here is something you need:',
+                    'Your shopping list for your smoothie:',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
@@ -239,12 +235,12 @@ class DailySmoothieResultPage extends ConsumerWidget {
                           ingredient.name,
                           style: TextStyle(
                             decoration:
-                                isCrossed ? TextDecoration.lineThrough : null,
-                            color: isCrossed ? Colors.grey : null,
+                                !isCrossed ? TextDecoration.lineThrough : null,
+                            color: !isCrossed ? Colors.grey : null,
                           ),
                         ),
                         trailing: Checkbox(
-                          value: isCrossed,
+                          value: !isCrossed,
                           onChanged: (_) {
                             ref
                                 .read(crossedItemsProvider(data).notifier)
