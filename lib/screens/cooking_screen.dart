@@ -48,7 +48,7 @@ class CookingScreen extends ConsumerWidget {
                     textAlign: TextAlign.start,
                   ),
                   const SizedBox(height: 20),
-                  if (step.tips.isNotEmpty) ...[
+                  if (step.tips.isNotEmpty && step.tips.first.isNotEmpty) ...[
                     Text(
                       'Tips:',
                       textAlign: TextAlign.start,
