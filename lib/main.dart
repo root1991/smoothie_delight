@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
 import 'package:smoothie/db/database_manager.dart';
+import 'package:smoothie/manager/daily_smoothie_manager.dart';
 import 'package:smoothie/models.dart';
 import 'package:smoothie/notifiers/favorite_state_notifier.dart';
 import 'package:smoothie/offline_categories.dart';
@@ -69,6 +70,10 @@ final favoriteNotifierProvider =
   return FavoriteNotifier(db);
 });
 
+final dailySmoothieManagerProvider = Provider<DailySmoothieManager>((ref) {
+  return DailySmoothieManager();
+});
+
 Future<void> saveAllRecipes() async {
   final db = RecipeLocalDataSource();
   for (final recipe in fruityBlendsRecipes) {
@@ -110,7 +115,7 @@ final crossedItemsProvider = StateNotifierProvider.family<CrossedItemsNotifier,
 });
 
 class CrossedItemsNotifier extends StateNotifier<Set<Product>> {
-  CrossedItemsNotifier(Set<Product> initialItems) : super(initialItems);
+  CrossedItemsNotifier(super.initialItems);
   void toggleItem(Product item) {
     if (state.contains(item)) {
       state = state.difference({item});
