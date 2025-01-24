@@ -97,7 +97,6 @@ Future<void> saveAllRecipes() async {
 }
 
 final recipesProvider = Provider<Map<String, List<Recipe>>>((ref) {
-  final db = RecipeLocalDataSource();
   return {
     'Fruity Blends': fruityBlendsRecipes,
     'Green & Healthy': greenAndHealthyRecipes,
