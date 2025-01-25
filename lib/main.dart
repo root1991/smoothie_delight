@@ -93,7 +93,6 @@ Future<void> saveAllRecipes() async {
   }
 
   await db.populateProductsFromIngredients();
-  print('All recipes saved to database.');
 }
 
 final recipesProvider = Provider<Map<String, List<Recipe>>>((ref) {
