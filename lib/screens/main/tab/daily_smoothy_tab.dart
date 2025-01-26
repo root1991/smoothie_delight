@@ -170,93 +170,103 @@ class DailySmoothieResultPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dailySmoothie = ref.watch(dailySmoothieProvider);
     final missingIngredients = ref.watch(missingIngredientsProvider);
+    final initProvider = ref.watch(dailySmoothieInitProvider);
 
-    return dailySmoothie.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text('Error: $error')),
-      data: (recipe) => CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            expandedHeight: 350,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Container(
-                color: Colors.black45,
-                child: const Text(
-                  'Your daily smoothie is:',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600),
+    return initProvider.when(
+      data: (_) {
+        return dailySmoothie.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stack) => Center(child: Text('Error: $error')),
+          data: (recipe) => CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                pinned: true,
+                expandedHeight: 350,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Container(
+                    color: Colors.black45,
+                    child: const Text(
+                      'Your daily smoothie is:',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  background: Image.asset(
+                    '${recipe.assetPath}.webp',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-              background: Image.asset(
-                '${recipe.assetPath}.webp',
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    recipe.name,
-                    style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        recipe.name,
+                        style: const TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Your shoping list :',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Your shopping list for your smoothie:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                ],
+                ),
               ),
-            ),
-          ),
-          missingIngredients.when(
-              data: (List<Product> data) {
-                final crossedItems = ref.watch(crossedItemsProvider(data));
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final ingredient = data[index];
+              missingIngredients.when(
+                  data: (List<Product> data) {
+                    final crossedItems = ref.watch(crossedItemsProvider(data));
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final ingredient = data[index];
 
-                      final isCrossed = crossedItems.contains(ingredient);
-                      return ListTile(
-                        leading: Image.asset(
-                          ingredient.assetPath,
-                          width: 40,
-                          height: 40,
-                        ),
-                        title: Text(
-                          ingredient.name,
-                          style: TextStyle(
-                            decoration:
-                                !isCrossed ? TextDecoration.lineThrough : null,
-                            color: !isCrossed ? Colors.grey : null,
-                          ),
-                        ),
-                        trailing: Checkbox(
-                          value: !isCrossed,
-                          onChanged: (_) {
-                            ref
-                                .read(crossedItemsProvider(data).notifier)
-                                .toggleItem(ingredient);
-                          },
-                        ),
-                      );
-                    },
-                    childCount: data.length,
-                  ),
-                );
-              },
-              error: (Object error, StackTrace stackTrace) => const SizedBox(),
-              loading: () => const SizedBox()),
-        ],
-      ),
+                          final isCrossed = crossedItems.contains(ingredient);
+                          return ListTile(
+                            leading: Image.asset(
+                              ingredient.assetPath,
+                              width: 40,
+                              height: 40,
+                            ),
+                            title: Text(
+                              ingredient.name,
+                              style: TextStyle(
+                                decoration: !isCrossed
+                                    ? TextDecoration.lineThrough
+                                    : null,
+                                color: !isCrossed ? Colors.grey : null,
+                              ),
+                            ),
+                            trailing: Checkbox(
+                              value: !isCrossed,
+                              onChanged: (_) {
+                                ref
+                                    .read(crossedItemsProvider(data).notifier)
+                                    .toggleItem(ingredient);
+                              },
+                            ),
+                          );
+                        },
+                        childCount: data.length,
+                      ),
+                    );
+                  },
+                  error: (Object error, StackTrace stackTrace) =>
+                      const SizedBox(),
+                  loading: () => const SizedBox()),
+            ],
+          ),
+        );
+      },
+      error: (Object error, StackTrace stackTrace) => const SizedBox(),
+      loading: () => const SizedBox(),
     );
   }
 }

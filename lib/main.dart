@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smoothie/db/database_manager.dart';
 import 'package:smoothie/manager/daily_smoothie_manager.dart';
 import 'package:smoothie/models.dart';
@@ -51,6 +53,31 @@ final dailySmoothieProvider = FutureProvider<Recipe>((ref) async {
 
   return db.getDailySmoothie(selectedIngredients, mood?.products ?? []);
 });
+
+final dailySmoothieInitProvider = FutureProvider<void>((ref) async {
+  final prefs = await SharedPreferences.getInstance();
+  final savedData = prefs.getString(dailySmoothieKey);
+  final savedTimestamp = prefs.getInt(smoothieTimestampKey);
+  if (savedData != null && savedTimestamp != null) {
+    final savedDate = DateTime.fromMillisecondsSinceEpoch(savedTimestamp);
+    if (!_isSameDay(savedDate, DateTime.now())) {
+      await prefs.remove(dailySmoothieKey);
+      await prefs.remove(smoothieTimestampKey);
+    }
+  }
+  if (savedData == null || savedTimestamp == null) {
+    final recipe = ref.read(dailySmoothieProvider);
+    await prefs.setString(dailySmoothieKey, jsonEncode(recipe.value?.toMap()));
+    await prefs.setInt(
+        smoothieTimestampKey, DateTime.now().millisecondsSinceEpoch);
+  }
+});
+
+bool _isSameDay(DateTime date1, DateTime date2) {
+  return date1.year == date2.year &&
+      date1.month == date2.month &&
+      date1.day == date2.day;
+}
 
 final ingredientCountProvider =
     FutureProvider<Map<Product, List<Recipe>>>((ref) async {
