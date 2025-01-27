@@ -126,7 +126,6 @@ final recipesProvider = Provider<Map<String, List<Recipe>>>((ref) {
   return {
     'Fruity Blends': fruityBlendsRecipes,
     'Green & Healthy': greenAndHealthyRecipes,
-    'Kids Specials': kidsSpecialRecipes,
   };
 });
 
