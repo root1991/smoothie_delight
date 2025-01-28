@@ -17,8 +17,24 @@ class Mood {
 }
 
 final pageIndexProvider = StateProvider<int>((ref) => 0);
-final selectedIngredientsProvider = StateProvider<List<String>>((ref) => []);
+final selectedIngredientsProvider = StateProvider<List<Product>>((ref) => []);
 final selectedMoodProvider = StateProvider<Mood?>((ref) => null);
+
+final missingIngredientsProvider = FutureProvider<List<Product>>((ref) async {
+  final selectedIngredients = ref.watch(selectedIngredientsProvider);
+  final dailySmoothieAsync = await ref.watch(dailySmoothieProvider.future);
+
+  final smoothieProducts = dailySmoothieAsync.ingredients
+      .map((ingredient) => ingredient.product)
+      .toSet();
+  final selectedProductNames =
+      selectedIngredients.map((product) => product.name).toSet();
+  final missingProducts = smoothieProducts.where((product) {
+    return !selectedProductNames.contains(product.name);
+  }).toList();
+  return missingProducts;
+});
+
 final moods = [
   Mood(
     name: 'Energetic',
@@ -103,15 +119,25 @@ class DailySmoothieTab extends ConsumerWidget {
     final currentPage = ref.watch(pageIndexProvider);
 
     void nextPage() {
-      if (currentPage < 5) {
+      if (currentPage < 4) {
         ref.read(pageIndexProvider.notifier).state++;
         pageController.animateToPage(
           currentPage + 1,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
         );
-      } else {
-        //Navigator.pop(context);
+      }
+    }
+
+    void back() {
+      if (currentPage != 0) {
+        ref.read(pageIndexProvider.notifier).state--;
+
+        pageController.animateToPage(
+          currentPage - 1,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
       }
     }
 
@@ -121,87 +147,159 @@ class DailySmoothieTab extends ConsumerWidget {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           LetsDoItPage(nextPage: nextPage),
-          IngredientSelectionPage(nextPage),
-          MoodSelectionPage(nextPage),
-          GoalPage(index: 4, nextPage: nextPage),
-          GoalPage(index: 5, nextPage: nextPage),
+          IngredientSelectionPage(nextPage, back),
+          MoodSelectionPage(nextPage, back),
+          DailySmoothieResultPage(index: 4, nextPage: nextPage),
         ],
       ),
     );
   }
 }
 
-class GoalPage extends StatelessWidget {
+class DailySmoothieResultPage extends ConsumerWidget {
   final int index;
   final VoidCallback nextPage;
 
-  const GoalPage({
+  const DailySmoothieResultPage({
     super.key,
     required this.index,
     required this.nextPage,
   });
 
   @override
-  Widget build(BuildContext context) {
-    List<String> goalTitles = [
-      'Energy Boost',
-      'Recovery',
-      'Detox',
-      'Immunity Boost',
-      'Healthy Skin',
-      'Bone Health'
-    ];
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dailySmoothie = ref.watch(dailySmoothieProvider);
+    final missingIngredients = ref.watch(missingIngredientsProvider);
+    final initProvider = ref.watch(dailySmoothieInitProvider);
 
-    return Column(
-      children: [
-        Center(
-          child: Text(
-            goalTitles[index],
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return initProvider.when(
+      data: (_) {
+        return dailySmoothie.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stack) => Center(child: Text('Error: $error')),
+          data: (recipe) => CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                pinned: true,
+                expandedHeight: 350,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Container(
+                    color: Colors.black45,
+                    child: const Text(
+                      'Your daily smoothie is:',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  background: Image.asset(
+                    '${recipe.assetPath}.webp',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        recipe.name,
+                        style: const TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Your shoping list :',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
+                ),
+              ),
+              missingIngredients.when(
+                  data: (List<Product> data) {
+                    final crossedItems = ref.watch(crossedItemsProvider(data));
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final ingredient = data[index];
+
+                          final isCrossed = crossedItems.contains(ingredient);
+                          return ListTile(
+                            leading: Image.asset(
+                              ingredient.assetPath,
+                              width: 40,
+                              height: 40,
+                            ),
+                            title: Text(
+                              ingredient.name,
+                              style: TextStyle(
+                                decoration: !isCrossed
+                                    ? TextDecoration.lineThrough
+                                    : null,
+                                color: !isCrossed ? Colors.grey : null,
+                              ),
+                            ),
+                            trailing: Checkbox(
+                              value: !isCrossed,
+                              onChanged: (_) {
+                                ref
+                                    .read(crossedItemsProvider(data).notifier)
+                                    .toggleItem(ingredient);
+                              },
+                            ),
+                          );
+                        },
+                        childCount: data.length,
+                      ),
+                    );
+                  },
+                  error: (Object error, StackTrace stackTrace) =>
+                      const SizedBox(),
+                  loading: () => const SizedBox()),
+            ],
           ),
-        ),
-        ElevatedButton(
-          onPressed: nextPage,
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 40,
-              vertical: 15,
-            ),
-          ),
-          child: const Text(
-            'Next',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ],
+        );
+      },
+      error: (Object error, StackTrace stackTrace) => const SizedBox(),
+      loading: () => const SizedBox(),
     );
   }
 }
 
 class MoodSelectionPage extends ConsumerWidget {
   final VoidCallback nextPage;
+  final VoidCallback back;
 
-  const MoodSelectionPage(this.nextPage, {super.key});
+  const MoodSelectionPage(this.nextPage, this.back, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedMood = ref.watch(selectedMoodProvider);
     return Column(
       children: [
-        const Text(
-          'How do you feel?',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 25,
-          ),
+        Row(
+          children: [
+            IconButton(
+              onPressed: back,
+              icon: const Icon(Icons.arrow_back_ios),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 16, bottom: 16, right: 16),
+              child: Text(
+                'How do you feel?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+          ],
         ),
         Expanded(
           child: Padding(
@@ -302,8 +400,9 @@ class MoodSelectionPage extends ConsumerWidget {
 }
 
 class IngredientSelectionPage extends ConsumerWidget {
-  const IngredientSelectionPage(this.nextPage, {super.key});
+  const IngredientSelectionPage(this.nextPage, this.back, {super.key});
   final VoidCallback nextPage;
+  final VoidCallback back;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -312,16 +411,24 @@ class IngredientSelectionPage extends ConsumerWidget {
 
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            'What do you have at home?',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 25,
+        Row(
+          children: [
+            IconButton(
+              onPressed: back,
+              icon: const Icon(Icons.arrow_back_ios),
             ),
-          ),
+            const Padding(
+              padding: EdgeInsets.only(top: 16, bottom: 16, right: 16),
+              child: Text(
+                'What do you have at home?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+          ],
         ),
         Expanded(
           child: productsAsync.when(
@@ -335,14 +442,13 @@ class IngredientSelectionPage extends ConsumerWidget {
               itemCount: products.length,
               itemBuilder: (context, index) {
                 final product = products[index];
-                final isSelected = selectedIngredients.contains(product.name);
+                final isSelected = selectedIngredients.contains(product);
 
                 return GestureDetector(
                   onTap: () {
                     ref.read(selectedIngredientsProvider.notifier).state = [
-                      ...selectedIngredients
-                          .where((item) => item != product.name),
-                      if (!isSelected) product.name,
+                      ...selectedIngredients.where((item) => item != product),
+                      if (!isSelected) product,
                     ];
                   },
                   child: Stack(

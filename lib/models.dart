@@ -65,7 +65,8 @@ class Ingredient {
       product: Product(
         name: map['productId'],
         category: '', // Can be fetched separately
-        assetPath: '',
+        assetPath:
+            "assets/${((map['productId']) as String).replaceAll(' ', '_').toLowerCase()}.webp",
       ),
       quantity: Quantity(
         description: map['quantity'],
