@@ -17,9 +17,9 @@ import 'package:sqflite/sqflite.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await resetDatabase();
+  //await resetDatabase();
   await initializeDatabase();
-  //: await saveAllRecipes();
+  //await saveAllRecipes();
   runApp(const ProviderScope(child: SmoothieApp()));
 }
 
@@ -30,6 +30,7 @@ Future<void> initializeDatabase() async {
 
 Future<void> resetDatabase() async {
   final dbPath = await getDatabasesPath();
+
   final path = join(dbPath, 'smoothie_app.db');
   await deleteDatabase(path);
 }

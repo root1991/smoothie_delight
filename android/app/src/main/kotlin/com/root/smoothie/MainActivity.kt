@@ -1,4 +1,4 @@
-package com.example.smoothie
+package com.root.smoothie
 
 import io.flutter.embedding.android.FlutterActivity
 

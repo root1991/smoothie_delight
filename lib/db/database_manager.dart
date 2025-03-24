@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -18,10 +21,26 @@ class DatabaseMananger {
     db.close();
   }
 
-  Future<Database> _initDB(String filePath) async {
+  Future<Database> _initDB(String fileName) async {
+    // Get the path to the internal storage
     final dbPath = await getDatabasesPath();
-    final path = join(dbPath, filePath);
+    final path = join(dbPath, fileName);
 
+    // Check if the database already exists
+    final exists = await databaseExists(path);
+
+    if (!exists) {
+      try {
+        // Load the database from the assets folder
+        final data = await rootBundle.load('assets/$fileName');
+        final bytes = data.buffer.asUint8List();
+
+        // Write the database to the internal storage
+        await File(path).writeAsBytes(bytes, flush: true);
+      } catch (e) {
+        rethrow;
+      }
+    }
     return await openDatabase(
       path,
       version: 1,
