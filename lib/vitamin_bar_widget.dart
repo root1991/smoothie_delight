@@ -23,7 +23,7 @@ class VitaminBarWidget extends StatelessWidget {
     'Iron': Colors.red,
   };
 
-  VitaminBarWidget({Key? key, required this.vitamins}) : super(key: key);
+  VitaminBarWidget({super.key, required this.vitamins});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,8 @@ class VitaminBarWidget extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Text(
-                  '${value.toStringAsFixed(1)} / ${maxValue.toStringAsFixed(1)}')
+                '${value.toStringAsFixed(1)} / ${maxValue.toStringAsFixed(1)}',
+              )
             ],
           ),
         );

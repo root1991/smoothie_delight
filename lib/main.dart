@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smoothie/db/database_manager.dart';
 import 'package:smoothie/manager/daily_smoothie_manager.dart';
@@ -19,6 +20,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await resetDatabase();
   await initializeDatabase();
+  await initPlatformState();
   //await saveAllRecipes();
   runApp(const ProviderScope(child: SmoothieApp()));
 }
@@ -173,4 +175,13 @@ class SmoothieApp extends StatelessWidget {
       home: const MainScreen(),
     );
   }
+}
+
+Future<void> initPlatformState() async {
+  await Purchases.setDebugLogsEnabled(true);
+
+  PurchasesConfiguration configuration =
+      PurchasesConfiguration('goog_BDVrdZlYRIZvYIZHFgGsMywdUBW');
+
+  await Purchases.configure(configuration);
 }
