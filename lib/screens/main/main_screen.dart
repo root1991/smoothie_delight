@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smoothie/main.dart';
 import 'package:smoothie/screens/main/tab/categories_tab.dart';
-import 'package:smoothie/screens/main/tab/daily_smoothy_tab.dart';
 import 'package:smoothie/screens/main/tab/favorite_tab.dart';
 import 'package:smoothie/screens/main/tab/ingredients_tab.dart';
 
@@ -24,7 +23,7 @@ class MainScreen extends ConsumerWidget {
         children: [
           const CategoriesTab(),
           const IngredientsTab(),
-          const DailySmoothieTab(),
+          //const DailySmoothieTab(),
           if (favoriteRecipes.isNotEmpty) const FavoritesTab()
         ],
       ),

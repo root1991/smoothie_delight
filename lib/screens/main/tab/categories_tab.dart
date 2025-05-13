@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smoothie/main.dart';
 import 'package:smoothie/models.dart';
-import 'package:smoothie/repository/recipe_local_data_source.dart';
+import 'package:smoothie/repository/salad_local_data_source.dart';
 import 'package:smoothie/screens/recipe_list_screen.dart';
 
-final recipesByCategoryProvider =
-    FutureProvider.family<List<Recipe>, String>((ref, categoryName) async {
-  final db = RecipeLocalDataSource();
-  return await db.fetchRecipesByCategory(categoryName);
+final saladsByCategoryProvider =
+    FutureProvider.family<List<Salad>, String>((ref, categoryName) async {
+  final db = SaladLocalDataSource();
+  return await db.fetchSaladsByCategory(categoryName);
 });
 
 class CategoriesTab extends ConsumerWidget {
@@ -36,10 +36,10 @@ class CategoriesTab extends ConsumerWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RecipeListScreen(
+                      builder: (context) => SaladListScreen(
                         title: category.name,
                         category: category.name,
-                        provider: recipesByCategoryProvider,
+                        provider: saladsByCategoryProvider,
                       ),
                     ),
                   );

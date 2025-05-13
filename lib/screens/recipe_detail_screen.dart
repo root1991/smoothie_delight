@@ -5,25 +5,25 @@ import 'package:smoothie/models.dart';
 import 'package:smoothie/screens/cooking_screen.dart';
 import 'package:smoothie/vitamin_bar_widget.dart';
 
-class RecipeDetailScreen extends ConsumerWidget {
-  final Recipe recipe;
+class SaladDetailScreen extends ConsumerWidget {
+  final Salad salad;
 
-  const RecipeDetailScreen({super.key, required this.recipe});
+  const SaladDetailScreen({super.key, required this.salad});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isFavorite = ref.watch(
       favoriteNotifierProvider.select(
-        (favorites) => favorites.any((r) => r.name == recipe.name),
+        (favorites) => favorites.any((r) => r.name == salad.name),
       ),
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text(recipe.name), actions: [
+      appBar: AppBar(title: Text(salad.name), actions: [
         IconButton(
           onPressed: () {
             ref.read(favoriteNotifierProvider.notifier).toggleFavorite(
-                  recipe,
+                  salad,
                 );
           },
           icon: isFavorite
@@ -42,12 +42,12 @@ class RecipeDetailScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.asset(
-                'assets/${recipe.name.toLowerCase().replaceAll(' ', '_')}.webp',
+                'assets/${salad.name.toLowerCase().replaceAll(' ', '_')}.webp',
                 fit: BoxFit.cover),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                recipe.description,
+                salad.description,
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
@@ -55,7 +55,7 @@ class RecipeDetailScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                'Calories: ${recipe.calories} kcal',
+                'Calories: ${salad.calories} kcal',
                 style: const TextStyle(fontSize: 16),
               ),
             ),
@@ -66,7 +66,7 @@ class RecipeDetailScreen extends ConsumerWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
-            ...recipe.ingredients.map((ingredient) => Padding(
+            ...salad.ingredients.map((ingredient) => Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16.0, vertical: 4.0),
                   child: Text(
@@ -84,7 +84,7 @@ class RecipeDetailScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                recipe.preparation.shortDescription,
+                salad.preparation.shortDescription,
                 style: const TextStyle(fontSize: 16),
               ),
             ),
@@ -98,7 +98,7 @@ class RecipeDetailScreen extends ConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => CookingScreen(
-                        preparation: recipe.preparation,
+                        preparation: salad.preparation,
                       ),
                     ),
                   );
@@ -125,7 +125,7 @@ class RecipeDetailScreen extends ConsumerWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: VitaminBarWidget(vitamins: recipe.vitamins),
+              child: VitaminBarWidget(vitamins: salad.vitamins),
             ),
             const SizedBox(
               height: 20,

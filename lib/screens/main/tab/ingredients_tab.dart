@@ -26,10 +26,10 @@ class IngredientsTab extends ConsumerWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => RecipeListScreen(
+                    builder: (context) => SaladListScreen(
                       category: entry.key.name,
                       title: entry.key.name,
-                      provider: recipesByProductProvider,
+                      provider: saladsByProductProvider,
                     ),
                   ),
                 );

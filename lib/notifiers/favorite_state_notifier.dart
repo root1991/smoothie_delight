@@ -1,20 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smoothie/models.dart';
-import 'package:smoothie/repository/recipe_local_data_source.dart';
+import 'package:smoothie/repository/salad_local_data_source.dart';
 
-class FavoriteNotifier extends StateNotifier<List<Recipe>> {
-  final RecipeLocalDataSource recipeLocalDataSource;
+class FavoriteNotifier extends StateNotifier<List<Salad>> {
+  final SaladLocalDataSource recipeLocalDataSource;
 
   FavoriteNotifier(this.recipeLocalDataSource) : super([]) {
     _loadFavorites();
   }
 
   Future<void> _loadFavorites() async {
-    final favoriteRecipes = await recipeLocalDataSource.fetchFavoriteRecipes();
+    final favoriteRecipes = await recipeLocalDataSource.fetchFavoriteSalads();
     state = favoriteRecipes;
   }
-
-  Future<void> toggleFavorite(Recipe recipe) async {
+g
+  Future<void> toggleFavorite(Salad recipe) async {
     final isNowFavorite = !state.any((r) => r.name == recipe.name);
 
     await recipeLocalDataSource.toggleFavoriteStatus(recipe.name);

@@ -1,19 +1,17 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smoothie/db/database_manager.dart';
-import 'package:smoothie/manager/daily_smoothie_manager.dart';
+import 'package:smoothie/db/database_manager.dart'; // Keep this import
+import 'package:smoothie/manager/daily_salad_manager.dart';
 import 'package:smoothie/models.dart';
 import 'package:smoothie/notifiers/favorite_state_notifier.dart';
 import 'package:smoothie/offline_recipes.dart';
-import 'package:smoothie/repository/recipe_local_data_source.dart';
+import 'package:smoothie/repository/salad_local_data_source.dart';
 import 'package:smoothie/screens/main/main_screen.dart';
-import 'package:smoothie/screens/main/tab/daily_smoothy_tab.dart';
 import 'package:sqflite/sqflite.dart';
 
 Future<void> main() async {
@@ -21,8 +19,8 @@ Future<void> main() async {
   //await resetDatabase();
   await initializeDatabase();
   await initPlatformState();
-  //await saveAllRecipes();
-  runApp(const ProviderScope(child: SmoothieApp()));
+  //await saveAllSalads();
+  runApp(const ProviderScope(child: SaladApp()));
 }
 
 Future<void> initializeDatabase() async {
@@ -38,40 +36,40 @@ Future<void> resetDatabase() async {
 }
 
 final categoriesProvider = FutureProvider<List<Category>>((ref) async {
-  final db = RecipeLocalDataSource();
+  final db = SaladLocalDataSource();
   return await db.fetchCategories();
 });
 
-final veganRecipesByCategoryProvider =
-    FutureProvider.family<List<Recipe>, String>((ref, categoryName) async {
-  final db = RecipeLocalDataSource();
-  return await db.fetchVeganRecipesByCategory(categoryName);
+final veganSaladsByCategoryProvider =
+    FutureProvider.family<List<Salad>, String>((ref, categoryName) async {
+  final db = SaladLocalDataSource();
+  return await db.fetchVeganSaladsByCategory(categoryName);
 });
 
-final dailySmoothieProvider = FutureProvider<Recipe>((ref) async {
-  final db = RecipeLocalDataSource();
-  final selectedIngredients = ref.watch(selectedIngredientsProvider);
-  final mood = ref.watch(selectedMoodProvider);
+//final dailySaladProvider = FutureProvider<Salad>((ref) async {
+//  final db = SaladLocalDataSource();
+  //final selectedIngredients = ref.watch(selectedIngredientsProvider);
+  //final mood = ref.watch(selectedMoodProvider);
 
-  return db.getDailySmoothie(selectedIngredients, mood?.products ?? []);
-});
+//  return db.getDailySalad(selectedIngredients, mood?.products ?? []);
+//});
 
-final dailySmoothieInitProvider = FutureProvider<void>((ref) async {
+final dailySaladInitProvider = FutureProvider<void>((ref) async {
   final prefs = await SharedPreferences.getInstance();
-  final savedData = prefs.getString(dailySmoothieKey);
-  final savedTimestamp = prefs.getInt(smoothieTimestampKey);
+  final savedData = prefs.getString(dailySaladKey);
+  final savedTimestamp = prefs.getInt(saladTimestampKey);
   if (savedData != null && savedTimestamp != null) {
     final savedDate = DateTime.fromMillisecondsSinceEpoch(savedTimestamp);
-    if (!_isSameDay(savedDate, DateTime.now())) {
-      await prefs.remove(dailySmoothieKey);
-      await prefs.remove(smoothieTimestampKey);
+    if (!_isSameDay(savedDate, DateTime.now())) { // You might want to use saladTimestampKey here too
+      await prefs.remove(dailySaladKey);
+      await prefs.remove(saladTimestampKey);
     }
   }
   if (savedData == null || savedTimestamp == null) {
-    final recipe = ref.read(dailySmoothieProvider);
-    await prefs.setString(dailySmoothieKey, jsonEncode(recipe.value?.toMap()));
-    await prefs.setInt(
-        smoothieTimestampKey, DateTime.now().millisecondsSinceEpoch);
+    // final salad = ref.read(dailySaladProvider);
+    // await prefs.setString(dailySaladKey, jsonEncode(salad.value?.toMap()));
+    // await prefs.setInt(
+        // saladTimestampKey, DateTime.now().millisecondsSinceEpoch);
   }
 });
 
@@ -82,57 +80,53 @@ bool _isSameDay(DateTime date1, DateTime date2) {
 }
 
 final ingredientCountProvider =
-    FutureProvider<Map<Product, List<Recipe>>>((ref) async {
-  final db = RecipeLocalDataSource();
-  return await db.fetchIngredientsWithRecipes();
+    FutureProvider<Map<Product, List<Salad>>>((ref) async {
+  final db = SaladLocalDataSource();
+  return await db.fetchIngredientsWithSalads();
 });
 
-final recipesByProductProvider =
-    FutureProvider.family<List<Recipe>, String>((ref, productName) async {
-  final db = RecipeLocalDataSource();
-  return await db.fetchRecipesByProduct(productName);
+final saladsByProductProvider =
+    FutureProvider.family<List<Salad>, String>((ref, productName) async {
+  final db = SaladLocalDataSource();
+  return await db.fetchSaladsByProduct(productName);
 });
 
 final favoriteNotifierProvider =
-    StateNotifierProvider<FavoriteNotifier, List<Recipe>>((ref) {
-  final db = RecipeLocalDataSource(); // Your db wrapper instance
+    StateNotifierProvider<FavoriteNotifier, List<Salad>>((ref) {
+  final db = SaladLocalDataSource(); // Your db wrapper instance
   return FavoriteNotifier(db);
 });
 
-final dailySmoothieManagerProvider = Provider<DailySmoothieManager>((ref) {
-  return DailySmoothieManager();
+final dailySaladManagerProvider = Provider<DailySaladManager>((ref) {
+  return DailySaladManager();
 });
 
-Future<void> saveAllRecipes() async {
-  final db = RecipeLocalDataSource();
-  for (final recipe in fruityBlendsRecipes) {
-    await db.insertRecipe(recipe);
+Future<void> saveAllSalads() async {
+  final db = SaladLocalDataSource();
+  for (final salad in sideSaladsRecepies) {
+    await db.insertSalad(salad);
   }
-  for (final recipe in greenAndHealthyRecipes) {
-    await db.insertRecipe(recipe);
+  for (final salad in greenSaladsRecepies) {
+    await db.insertSalad(salad);
   }
-  for (final recipe in kidsSpecialRecipes) {
-    await db.insertRecipe(recipe);
+  for (final salad in easySalads) {
+    await db.insertSalad(salad);
   }
-  for (final recipe in breakfastBoostersRecipes) {
-    await db.insertRecipe(recipe);
+  for (final salad in mainCourseSalads) {
+    await db.insertSalad(salad);
   }
-  for (final recipe in detoxAndCleanseRecipes) {
-    await db.insertRecipe(recipe);
-  }
-
-  await db.populateProductsFromIngredients();
 }
 
-final recipesProvider = Provider<Map<String, List<Recipe>>>((ref) {
+final saladsProvider = Provider<Map<String, List<Salad>>>((ref) {
   return {
-    'Fruity Blends': fruityBlendsRecipes,
-    'Green & Healthy': greenAndHealthyRecipes,
+    'Fruity Blends': fruityBlendsSalads,
+    'Green & Healthy': greenSaladsRecepies,
+    'Side Salads': sideSaladsRecepies,
   };
 });
 
 final productsProvider = FutureProvider<List<Product>>((ref) async {
-  final db = RecipeLocalDataSource();
+  final db = SaladLocalDataSource();
   return db.loadProducts();
 });
 final crossedItemsProvider = StateNotifierProvider.family<CrossedItemsNotifier,
@@ -153,8 +147,8 @@ class CrossedItemsNotifier extends StateNotifier<Set<Product>> {
 
 final selectedIndexProvider = StateProvider<int>((ref) => 0);
 
-class SmoothieApp extends StatelessWidget {
-  const SmoothieApp({super.key});
+class SaladApp extends StatelessWidget {
+  const SaladApp({super.key});
 
   @override
   Widget build(BuildContext context) {

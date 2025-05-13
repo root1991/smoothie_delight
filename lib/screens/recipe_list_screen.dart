@@ -3,39 +3,39 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smoothie/main.dart';
 import 'package:smoothie/models.dart';
 import 'package:smoothie/screens/recipe_detail_screen.dart';
-
-class RecipeListScreen extends ConsumerWidget {
+ 
+class SaladListScreen extends ConsumerWidget {
   final String category;
   final String title;
-  final FutureProviderFamily<List<Recipe>, String> provider;
+  final FutureProviderFamily<List<Salad>, String> provider;
 
-  const RecipeListScreen({
+  const SaladListScreen({
     super.key,
     required this.category,
     required this.title,
     required this.provider,
-  });
+ });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recipesAsync = ref.watch(provider(category));
+    final saladsAsync = ref.watch(provider(category));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('$category Recipes'),
+        title: Text('$category Salads'),
       ),
-      body: recipesAsync.when(
+      body: saladsAsync.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stack) => Center(child: Text('Error: $error')),
-          data: (recipes) {
+          data: (salads) {
             return GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 0.75,
               ),
-              itemCount: recipes.length,
+              itemCount: salads.length,
               itemBuilder: (context, index) {
-                final recipe = recipes[index];
+                final salad = salads[index];
                 return Stack(
                   children: [
                     GestureDetector(
@@ -43,8 +43,8 @@ class RecipeListScreen extends ConsumerWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => RecipeDetailScreen(
-                              recipe: recipe,
+                            builder: (context) => SaladDetailScreen(
+                              salad: salad,
                             ),
                           ),
                         );
@@ -57,9 +57,9 @@ class RecipeListScreen extends ConsumerWidget {
                           children: [
                             Expanded(
                               child: Image.asset(
-                                recipe.assetPath.contains('webp')
-                                    ? recipe.assetPath
-                                    : '${recipe.assetPath}.webp',
+                                salad.assetPath.contains('webp')
+                                    ? salad.assetPath
+                                    : '${salad.assetPath}.webp',
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -68,23 +68,23 @@ class RecipeListScreen extends ConsumerWidget {
                               child: Column(
                                 children: [
                                   Text(
-                                    recipe.name,
+                                    salad.name,
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  Text('${recipe.calories} kcal'),
-                                ],
+                                  Text('${salad.calories} kcal'),
+ ],
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    if (recipe.isVegan)
-                      Positioned(
+                    if (salad.isVegan)
+ Positioned(
                         top: 8,
                         left: 8,
                         child: Padding(
@@ -101,10 +101,10 @@ class RecipeListScreen extends ConsumerWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => RecipeListScreen(
+                                    builder: (context) => SaladListScreen(
                                       title: '$category Vegan',
                                       category: category,
-                                      provider: veganRecipesByCategoryProvider,
+                                      provider: veganSaladsByCategoryProvider,
                                     ),
                                   ),
                                 );
@@ -127,7 +127,7 @@ class RecipeListScreen extends ConsumerWidget {
                           ),
                         ),
                       ),
-                    if (recipe.isChilled)
+                    if (salad.isChilled)
                       Positioned(
                         top: 8,
                         right: 8,

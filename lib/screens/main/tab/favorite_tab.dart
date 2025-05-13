@@ -31,8 +31,8 @@ class FavoritesTab extends ConsumerWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RecipeDetailScreen(
-                        recipe: recipe,
+                      builder: (context) => SaladDetailScreen(
+                        salad: recipe,
                       ),
                     ),
                   );
@@ -93,7 +93,7 @@ class FavoritesTab extends ConsumerWidget {
   }
 
   void _removeFromFavorites(
-      BuildContext context, WidgetRef ref, Recipe recipe) async {
+      BuildContext context, WidgetRef ref, Salad recipe) async {
     final notifier = ref.read(favoriteNotifierProvider.notifier);
 
     await notifier.toggleFavorite(recipe);

@@ -25,7 +25,7 @@ class CookingScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cooking Steps'),
+        title: const Text('Cooking Steps'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

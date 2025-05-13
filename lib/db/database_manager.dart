@@ -49,12 +49,21 @@ class DatabaseMananger {
   }
 
   Future _onCreate(Database db, int version) async {
+    // Create Dressings Table
     await db.execute('''
-    CREATE TABLE recipe_categories (
-      recipeId INTEGER,
+    CREATE TABLE dressings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL
+    )
+  ''');
+
+    await db.execute('''
+    CREATE TABLE salad_categories (
+      saladId INTEGER,
       categoryName TEXT,
       assetPath TEXT,
       PRIMARY KEY (recipeId, categoryName),
+      -- Renamed from recipeId to saladId
       FOREIGN KEY (recipeId) REFERENCES recipes (id) ON DELETE CASCADE
     )
   ''');
@@ -69,13 +78,15 @@ class DatabaseMananger {
   ''');
 
     await db.execute('''
-    CREATE TABLE recipes (
+    CREATE TABLE salads (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       description TEXT,
       calories INTEGER,
       assetPath TEXT,
+      dressingId INTEGER, -- New column for dressing
       isVegan INTEGER,
+      -- isSmoothie INTEGER, -- Renamed to isSalad?
       isChilled INTEGER,
       isOffline INTEGER,
       ranking INTEGER,

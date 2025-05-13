@@ -1,50 +1,22 @@
 import 'package:smoothie/models.dart';
 
 final offlineCategories = [
-  fruityBlends,
-  greenAndHealthy,
-  proteinPower,
-  dessertSmoothies,
-  detoxAndCleanse,
-  kidsSpecials,
-  seasonalSpecials,
-  breakfastBoosters,
+  greenSalads,
+  fruitSalads,
+  sideSalads,
 ];
-final fruityBlends = Category(
-  name: 'Fruity Blends',
-  assetPath: 'assets/fruity_blends.webp',
+
+final greenSalads = Category(
+  name: 'Green Salads',
+  assetPath: 'assets/green_salads.webp', // Assuming asset for Green Salads
 );
 
-final greenAndHealthy = Category(
-  name: 'Green & Healthy',
-  assetPath: 'assets/green_healthy.webp',
+final fruitSalads = Category(
+ name: 'Fruit Salads',
+ assetPath: 'assets/fruit_salads.webp', // Assuming asset for Fruit Salads
 );
 
-final proteinPower = Category(
-  name: 'Protein Power',
-  assetPath: 'assets/protein_power.webp',
-);
-final dessertSmoothies = Category(
-  name: 'Dessert Smoothies',
-  assetPath: 'assets/dessert_smoothies.webp',
-);
-
-final detoxAndCleanse = Category(
-  name: 'Detox & Cleanse',
-  assetPath: 'assets/detox_cleanse.webp',
-);
-
-final kidsSpecials = Category(
-  name: 'Kids Specials',
-  assetPath: 'assets/kids_specials.webp',
-);
-
-final seasonalSpecials = Category(
-  name: 'Seasonal Specials',
-  assetPath: 'assets/seasonal_specials_winter.webp',
-);
-
-final breakfastBoosters = Category(
-  name: 'Breakfast Boosters',
-  assetPath: 'assets/breakfast_boosters.webp',
+final sideSalads = Category(
+ name: 'Side Salads',
+ assetPath: 'assets/side_salads.webp', // Assuming asset for Side Salads
 );

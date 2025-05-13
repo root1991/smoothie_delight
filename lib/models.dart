@@ -1,6 +1,35 @@
 // Models
 import 'package:smoothie/preparation.dart';
 
+class Dressing {
+  final String name;
+  final List<Ingredient> ingredients;
+  final Preparation preparation;
+
+  Dressing({
+    required this.name,
+    required this.ingredients,
+    required this.preparation,
+  });
+
+  factory Dressing.fromMap(Map<String, dynamic> map, {required List<Ingredient> ingredients, required Preparation preparation}) {
+    return Dressing(
+      name: map['name'], // Add the name field here
+ ingredients: ingredients, // Use the provided ingredients
+      preparation: preparation, // Use the provided preparation
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'ingredients': ingredients
+          .map((i) => i.toMap(0))
+          .toList(), // recipeId is not relevant for dressing ingredients
+      'preparation': preparation.toMap(),
+    };
+  }
+}
+
 class Quantity {
   final String description;
   final int weightInGrams;
@@ -87,7 +116,7 @@ class Category {
   });
 }
 
-class Recipe {
+class Salad {
   final String name;
   final String description;
   final List<Ingredient> ingredients;
@@ -100,9 +129,10 @@ class Recipe {
   final bool isChilled;
   final bool isOffline;
   final int ranking;
-  final bool isFavorite;
+  final bool isFavorite; // Assuming salads can also be favorited
 
-  Recipe({
+  final Dressing? dressing; // Added optional Dressing field
+  Salad({
     required this.assetPath,
     required this.name,
     required this.description,
@@ -116,6 +146,7 @@ class Recipe {
     this.isOffline = true,
     this.ranking = -1,
     this.isFavorite = false,
+    this.dressing, // Added dressing to constructor
   });
 
   Map<String, dynamic> toMap() {
@@ -129,18 +160,21 @@ class Recipe {
       'isOffline': isOffline ? 1 : 0,
       'ranking': ranking,
       'isFavorite': isFavorite ? 1 : 0,
+
+      'dressing': dressing?.toMap(), // Include dressing, converting it to a map
     };
   }
 
-  factory Recipe.fromMap(
-    Map<String, dynamic> map, {
+  factory Salad.fromMap(
+ Map<String, dynamic> map, { // Add saladMap as a positional argument
     required List<Ingredient> loadedIngredients,
     required Map<String, double> loadedVitamins,
     required List<Category> loadedCategories,
     required Preparation preparation,
+    Dressing? dressing, // Add dressing as an optional named argument
   }) {
-    return Recipe(
-      name: map['name'],
+    return Salad(
+ name: map['name'], // Keep as is for now, will update names later
       description: map['description'],
       calories: map['calories'],
       preparation: preparation,
@@ -152,7 +186,9 @@ class Recipe {
       isChilled: map['isChilled'] == 1,
       isOffline: map['isOffline'] == 1,
       ranking: map['ranking'] ?? -1,
-      isFavorite: map['isFavorite'] == 1,
+      // isFavorite will need to be handled when loading from DB if it's a persistent state
+      isFavorite: map['isFavorite'] == 1, // Placeholder - will need to be handled correctly
+      dressing: dressing, // Assign the provided dressing
     );
   }
 }
